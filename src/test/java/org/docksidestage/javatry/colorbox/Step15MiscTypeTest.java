@@ -47,7 +47,7 @@ public class Step15MiscTypeTest extends PlainTestCase {
     //                                                                           =========
     /**
      * What value is returned by justHere() of FavoriteProvider in yellow color-box? <br>
-     * (カラーボックスに入っているFavoriteProviderインターフェースのjustHere()メソッドの戻り値は？)
+     * (yellowのカラーボックスに入っているFavoriteProviderインターフェースのjustHere()メソッドの戻り値は？)
      */
     public void test_interfaceCall() {
     }
