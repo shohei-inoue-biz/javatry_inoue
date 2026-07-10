@@ -24,7 +24,7 @@ import org.docksidestage.unit.PlainTestCase;
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りにエクササイズを実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author shohei-inoue-biz
  */
 public class Step01VariableTest extends PlainTestCase {
 
@@ -39,6 +39,20 @@ public class Step01VariableTest extends PlainTestCase {
         String sea = "mystic";
         log(sea); // your answer? => mystic
     }
+    /*
+      まずJavaの文法は？
+      →クラス, メソッドの書き方
+      ${modifier} class ${class_name} {
+          ${modifier} ${data_type} ${method_name}( ${argument} ) {
+              ...
+          }
+          ...
+      }
+      これが基本形
+      extends → 親クラスの継承　→ Javaもオブジェクト指向型　→ オーバーライドするメソッドには@Override（アノテーション）つけるのが推奨
+
+      log() -> 引数オブジェクト型なんだ（しかも可変長引数）-> 可変長引数...で表す→object型だから可変長できる→Stringの方が良くね？→objectならobjectであればなんでも渡せるんか
+     */
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_initial() {
@@ -47,8 +61,28 @@ public class Step01VariableTest extends PlainTestCase {
         String piari = null;
         String dstore = "mai";
         sea = sea + land + piari + ":" + dstore;
-        log(sea); // your answer? => 
+
+        log(sea); // your answer? => mystic8null:mai
     }
+    /*
+        IntegerとIntどちらがいい？→intが整数型（プリミティブ型）でIntegerはオブジェクトとして扱われるラッパークラス（参照型）
+        使い分けは？→通常計算や演算、ループカウント、インデックス、あたいが絶対に存在する時がInt、コレクションやDB,WEBフォーム等はInteger → Web開発は基本Integer
+        →Integerであるため、オブジェクトとして扱えるからnull許容もできる→だから文字列に足しても許容?　→intでもいける　→　文字列からの代入は？ -> どちらも無理
+     */
+    /*
+     public void test_variable_initial_exp() {
+            String sea = "mystic";
+            Integer land = 8;
+            int land_int = 8;
+           land = Integer.valueOf(land + sea);
+            land_int = Integer.parseInt(land_int + sea);
+
+            log(land);
+            log(land_int);
+        }
+        error -> java.lang.NumberFormatException: For input string: "8mystic" -> そりゃあ解釈できないか
+     */
+
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_basic() {
@@ -56,8 +90,12 @@ public class Step01VariableTest extends PlainTestCase {
         String land = "oneman";
         sea = land;
         land = land + "'s dreams";
-        log(sea); // your answer? => 
+        log(sea); // your answer? => oneman
     }
+    /*
+    値渡しだからlandを代入後に変更しても変わらない→Javaにもポインタってある？→ポインタはないが参照がある→ new ${variable_name}でオブジェクトのインスタンスを作ったときに参照が格納される
+    コンストラクタみたいなイメージでいいんかな
+     */
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_int() {
@@ -65,18 +103,32 @@ public class Step01VariableTest extends PlainTestCase {
         int land = 415;
         sea = land;
         land++;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 415
     }
+    /*
+    今んとこはプリミティブ型扱っているから変化なし
+    インクリメントがあるってことは省略型の演算子は基本使えるはず　-> 基本的にはCと一緒、三項演算子も使える
+     */
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_BigDecimal() {
         BigDecimal sea = new BigDecimal(94);
         BigDecimal land = new BigDecimal(415);
         sea = land;
+        log(sea); //415
         sea = land.add(new BigDecimal(1));
+        log(sea); // 416
+        log(land); //415
         sea.add(new BigDecimal(1));
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 417 => 416
+        log(land);// 415
     }
+    /*
+    BigDecimal()とは？→誤差の出ない正確な十進数計算を行うためのAPI -> ん？なぜInt?->整数型なら問題ないらしい→正確な値として保持しているから
+    .add()->加算 -> 計算はされるが結果は代入されない -> メソッド見たらリターンされているだけだった
+    private final transient long intCompact;　→ transientは変数をシリアライズの対象から外す, intCompact -> long型に収まる場合に高速に計算するための変数
+    両方の変数を保持するとデータ量が無駄になる→確かに
+    */
 
     // ===================================================================================
     //                                                                   Instance Variable
