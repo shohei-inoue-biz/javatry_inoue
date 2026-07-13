@@ -141,20 +141,31 @@ public class Step01VariableTest extends PlainTestCase {
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_String() {
         String sea = instanceBroadway;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => null
     }
+    /*
+    instanceBroadway初期化していないはずだからnull -> 正しい　-> Javaは絶対に初期化しなくて良い？　→ ローカル変数ではダメ、グローバルなら可？
+    → グローバル変数というものはJavaにはない。　クラス変数やインスタン変数なら可能 → 規定の初期値が入る　→ 今回はインスタンス変数に当たる
+     */
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_int() {
         int sea = instanceDockside;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 0
     }
+    /*
+    そういえばprivate修飾子ってpythonと一緒？→一緒そう→クラス内なら呼び出せる
+    protectedとprivateの違い→protectedはサブクラスと同一パッケージでも呼び出し可能、privateはクラス内のみ
+     */
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_Integer() {
         Integer sea = instanceHangar;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 0.0 -> null
     }
+    /*
+    IntegerはIntの参照型→メモリ上のオブジェクトのアドレスを示す→アドレスがない場合はnull
+     */
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_via_method() {
@@ -182,7 +193,7 @@ public class Step01VariableTest extends PlainTestCase {
         String sea = "harbor";
         int land = 415;
         helpMethodArgumentImmutableMethodcall(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor416 -> harbor
     }
 
     private void helpMethodArgumentImmutableMethodcall(String sea, int land) {
@@ -190,6 +201,9 @@ public class Step01VariableTest extends PlainTestCase {
         String landStr = String.valueOf(land); // is "416"
         sea.concat(landStr);
     }
+    /*
+    landをインクリメントしている→landの値は正しい→.concat(landStr)が問題→concatは文字列の結合では？→結合しているけど代入しているわけではないからか
+     */
 
     // -----------------------------------------------------
     //                                   Mutable Method-call
