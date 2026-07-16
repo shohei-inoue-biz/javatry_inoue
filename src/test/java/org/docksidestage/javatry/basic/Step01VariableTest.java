@@ -174,6 +174,8 @@ public class Step01VariableTest extends PlainTestCase {
     instanceBroadway初期化していないはずだからnull -> 正しい　-> Javaは絶対に初期化しなくて良い？　→ ローカル変数ではダメ、グローバルなら可？
     → グローバル変数というものはJavaにはない。　クラス変数やインスタン変数なら可能 → 規定の初期値が入る　→ 今回はインスタンス変数に当たる
      */
+    // TODO inoue 文法的にはグローバル変数はなく、何かしらに所属する変数ということにはなります by jflute (2026/07/16)
+    // ただ、クラス変数(static変数) で public だったら、実質的というか概念的なグローバル変数も作れますが。
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_int() {
@@ -184,6 +186,8 @@ public class Step01VariableTest extends PlainTestCase {
     そういえばprivate修飾子ってpythonと一緒？→一緒そう→クラス内なら呼び出せる
     protectedとprivateの違い→protectedはサブクラスと同一パッケージでも呼び出し可能、privateはクラス内のみ
      */
+    // TODO inoue Javaのprotectedはちょっとへんてこりんで、パッケージスコープも混ざってます by jflute (2026/07/16)
+    // ただ、紛らわしいので、protectedのパッケージスコープ特徴はあまり使わず、継承スコープのみでprotectedを意識することが多いです。
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_Integer() {
@@ -202,6 +206,7 @@ public class Step01VariableTest extends PlainTestCase {
         String sea = instanceBroadway + "|" + instanceDockside + "|" + instanceHangar + "|" + instanceMagiclamp;
         log(sea); // your answer? => 
     }
+    // TODO inoue ここは飛ばしてる？ by jflute (2026/07/16)
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
         instanceBroadway = "bigband";
@@ -231,6 +236,10 @@ public class Step01VariableTest extends PlainTestCase {
     /*
     landをインクリメントしている→landの値は正しい→.concat(landStr)が問題→concatは文字列の結合では？→結合しているけど代入しているわけではないからか
      */
+    // TODO inoue [ふぉろー] yes, BigDecimalのadd()みたいに、自分自身のインスタンスの状態を変えるわけではないので... by jflute (2026/07/16)
+    // concat()は、harbor416 という新しいStringインスタンスを作っただけに過ぎません。
+    // でもって、それを受けってすらなく、すぐさま破棄しているので、test_...()側には何も作用しないと言うことですね。
+    // Stringの特徴をわかっていれば、実はこのエクササイズ、help...()のコードを読まなくても答えを断定できます。
 
     // -----------------------------------------------------
     //                                   Mutable Method-call
