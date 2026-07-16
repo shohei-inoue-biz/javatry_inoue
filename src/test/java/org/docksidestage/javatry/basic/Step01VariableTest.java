@@ -50,9 +50,17 @@ public class Step01VariableTest extends PlainTestCase {
       }
       これが基本形
       extends → 親クラスの継承　→ Javaもオブジェクト指向型　→ オーバーライドするメソッドには@Override（アノテーション）つけるのが推奨
-
+    
       log() -> 引数オブジェクト型なんだ（しかも可変長引数）-> 可変長引数...で表す→object型だから可変長できる→Stringの方が良くね？→objectならobjectであればなんでも渡せるんか
      */
+    // TODO inoue [いいね] まずしっかり文法からインプット、素晴らしいです by jflute (2026/07/16)
+    // log()メソッドの定義まで追求もGoodです。最終的にはすべてStringにされるわけですが...
+    // Integer の値もそのまま引数指定できるようにということで、わりとざっくりなスタイルで実装されています。
+    // e.g. 
+    //  Integer sea = ...
+    //  x log(sea.toString());
+    //  o log(sea);
+    // UnitTest専用のメソッドだから「ざっくり寄り」というのもあります。
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_initial() {
@@ -76,13 +84,16 @@ public class Step01VariableTest extends PlainTestCase {
             int land_int = 8;
            land = Integer.valueOf(land + sea);
             land_int = Integer.parseInt(land_int + sea);
-
+    
             log(land);
             log(land_int);
         }
         error -> java.lang.NumberFormatException: For input string: "8mystic" -> そりゃあ解釈できないか
      */
-
+    // TODO inoue [いいね] 実験Goodです。 by jflute (2026/07/16)
+    // TODO inoue [読み物課題] よければ、以下のページを参考に by jflute (2026/07/16)
+    // // Java Beginner's Hint - プリミティブ型とラッパー型 | DBFlute
+    // https://dbflute.seasar.org/ja/manual/topic/programming/java/beginners.html#primitivewrapper
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_basic() {
@@ -96,6 +107,18 @@ public class Step01VariableTest extends PlainTestCase {
     値渡しだからlandを代入後に変更しても変わらない→Javaにもポインタってある？→ポインタはないが参照がある→ new ${variable_name}でオブジェクトのインスタンスを作ったときに参照が格納される
     コンストラクタみたいなイメージでいいんかな
      */
+    // TODO inoue [ふぉろー] Javaにはポインタ参照はあるけどポインタ操作(演算など)はできないとよく聞きます by jflute (2026/07/16)
+    // オブジェクト型の変数に入っているのはあくまでアドレスです。どこかのメモリ上のインスタンスを指し示しています。
+    //
+    // sea = land; の行で、seaもlandも同じアドレスを一瞬持ちます。
+    // land = land + "'s dreams"; の行で、land は新しく生成された String インスタンスのアドレスに差し変わります。
+    // (land + "'s dreams" の部分は、元々landが指し示すStringと 's dreams を足した新しいStringインスタンスを作っています)
+    // seaのアドレスも、seaが指し示しているインスタンスも、特に何か変更が加えられていないのでそのままってことですね。
+    //
+    // 新しいインスタンスが生成されるときは、そのクラスのコンストラクタが実行されます。
+    // Stringだけ特別で、new String(...) って書かなくても、"mystic" って書くだけで、
+    // new String("mystic") されているのと同じになるように特別扱いされています。
+    // land + "'s dreams" も、内部的には new String("oneman's dreams") で実行されています。
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_int() {
@@ -109,6 +132,8 @@ public class Step01VariableTest extends PlainTestCase {
     今んとこはプリミティブ型扱っているから変化なし
     インクリメントがあるってことは省略型の演算子は基本使えるはず　-> 基本的にはCと一緒、三項演算子も使える
      */
+    // TODO inoue [よもやま] Javaが作られた1995年あたりはC言語は超メジャー言語でしたので... by jflute (2026/07/16)
+    // JavaもC言語をだいぶ意識して設計されている印象ですね。(C言語プログラマーがスムーズにJavaに移行できるようにって)
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_BigDecimal() {
@@ -129,6 +154,8 @@ public class Step01VariableTest extends PlainTestCase {
     private final transient long intCompact;　→ transientは変数をシリアライズの対象から外す, intCompact -> long型に収まる場合に高速に計算するための変数
     両方の変数を保持するとデータ量が無駄になる→確かに
     */
+    // TODO jflute ここは1on1でじっくりお話ししますね(^^ (2026/07/16)
+    // ↑このとぅどぅは、くぼ用の備忘録なのでそのまま残しておいてOKです
 
     // ===================================================================================
     //                                                                   Instance Variable
