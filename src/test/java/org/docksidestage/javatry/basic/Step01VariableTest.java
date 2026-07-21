@@ -37,7 +37,7 @@ public class Step01VariableTest extends PlainTestCase {
      */
     public void test_variable_basic() { // example, so begin from the next method
         String sea = "mystic";
-        log(sea); // your answer? => mystic
+        log("xxxxは{}である", sea); // your answer? => mystic
     }
     /*
       まずJavaの文法は？
@@ -53,7 +53,7 @@ public class Step01VariableTest extends PlainTestCase {
     
       log() -> 引数オブジェクト型なんだ（しかも可変長引数）-> 可変長引数...で表す→object型だから可変長できる→Stringの方が良くね？→objectならobjectであればなんでも渡せるんか
      */
-    // TODO inoue [いいね] まずしっかり文法からインプット、素晴らしいです by jflute (2026/07/16)
+    // done inoue [いいね] まずしっかり文法からインプット、素晴らしいです by jflute (2026/07/16)
     // log()メソッドの定義まで追求もGoodです。最終的にはすべてStringにされるわけですが...
     // Integer の値もそのまま引数指定できるようにということで、わりとざっくりなスタイルで実装されています。
     // e.g. 
@@ -61,6 +61,9 @@ public class Step01VariableTest extends PlainTestCase {
     //  x log(sea.toString());
     //  o log(sea);
     // UnitTest専用のメソッドだから「ざっくり寄り」というのもあります。
+    // #1on1: せっかくなのでSlf4jのコード読んでみた (2026/07/21)
+    // e.g. 
+    //  public void debug(String format, Object... arguments);
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_initial() {
@@ -90,7 +93,8 @@ public class Step01VariableTest extends PlainTestCase {
         }
         error -> java.lang.NumberFormatException: For input string: "8mystic" -> そりゃあ解釈できないか
      */
-    // TODO inoue [いいね] 実験Goodです。 by jflute (2026/07/16)
+    // done inoue [いいね] 実験Goodです。 by jflute (2026/07/16)
+    // #1on1: ちゃちゃっと実験する環境を整えておくってのも大事 (2026/07/21)
     // TODO inoue [読み物課題] よければ、以下のページを参考に by jflute (2026/07/16)
     // // Java Beginner's Hint - プリミティブ型とラッパー型 | DBFlute
     // https://dbflute.seasar.org/ja/manual/topic/programming/java/beginners.html#primitivewrapper
@@ -120,6 +124,13 @@ public class Step01VariableTest extends PlainTestCase {
     // new String("mystic") されているのと同じになるように特別扱いされています。
     // land + "'s dreams" も、内部的には new String("oneman's dreams") で実行されています。
 
+    // #1on1: いのうえさんのコンストラクタのイメージは、C++, Python (2026/07/21)
+    // Stringのコンストラクタのコードも一緒に読んでみた。
+    // 変数とインスタンスのお話も。インスタンスとは？ (実体というか... by いのうえさん)
+    // 車のたとえ by いのうえさん
+    // 一軒家のたとめ by くぼ
+    // BigDecimalのエクササイズでもインスタンスのお話しした
+
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_int() {
         int sea = 94;
@@ -132,7 +143,7 @@ public class Step01VariableTest extends PlainTestCase {
     今んとこはプリミティブ型扱っているから変化なし
     インクリメントがあるってことは省略型の演算子は基本使えるはず　-> 基本的にはCと一緒、三項演算子も使える
      */
-    // TODO inoue [よもやま] Javaが作られた1995年あたりはC言語は超メジャー言語でしたので... by jflute (2026/07/16)
+    // done inoue [よもやま] Javaが作られた1995年あたりはC言語は超メジャー言語でしたので... by jflute (2026/07/16)
     // JavaもC言語をだいぶ意識して設計されている印象ですね。(C言語プログラマーがスムーズにJavaに移行できるようにって)
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -145,6 +156,7 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // 416
         log(land); //415
         sea.add(new BigDecimal(1));
+
         log(sea); // your answer? => 417 => 416
         log(land);// 415
     }
@@ -154,8 +166,22 @@ public class Step01VariableTest extends PlainTestCase {
     private final transient long intCompact;　→ transientは変数をシリアライズの対象から外す, intCompact -> long型に収まる場合に高速に計算するための変数
     両方の変数を保持するとデータ量が無駄になる→確かに
     */
-    // TODO jflute ここは1on1でじっくりお話ししますね(^^ (2026/07/16)
+    // done jflute ここは1on1でじっくりお話ししますね(^^ (2026/07/16)
     // ↑このとぅどぅは、くぼ用の備忘録なのでそのまま残しておいてOKです
+    // #1on1: BigDecimalのimmutableぶりをコード追ってみた (2026/07/21)
+    // pythonでimmutable/mutableよく出てきた by いのうえさん
+    //
+    // immutableメリデメ:
+    // o メリット: 変わらないと嬉しいこと、変わっちゃいけないところで使える、可読性、安全性
+    //   → 可読性の説明しっかりと
+    // o デメリット: add()のたびにインスタンスを生成するのでメモリを少し使う(些細だけど)
+    //
+    // mutableメリデメ:
+    // o メリット: 変えなきゃいけない場面で変えられること、計算の場面とかだと素直かも、メモリを節約できる
+    // o デメリット: immutableのメリットの逆
+    //
+    // immutableの歴史のお話。
+    // 徹底する言語、8:2な言語
 
     // ===================================================================================
     //                                                                   Instance Variable
@@ -236,7 +262,7 @@ public class Step01VariableTest extends PlainTestCase {
     /*
     landをインクリメントしている→landの値は正しい→.concat(landStr)が問題→concatは文字列の結合では？→結合しているけど代入しているわけではないからか
      */
-    // TODO inoue [ふぉろー] yes, BigDecimalのadd()みたいに、自分自身のインスタンスの状態を変えるわけではないので... by jflute (2026/07/16)
+    // done inoue [ふぉろー] yes, BigDecimalのadd()みたいに、自分自身のインスタンスの状態を変えるわけではないので... by jflute (2026/07/16)
     // concat()は、harbor416 という新しいStringインスタンスを作っただけに過ぎません。
     // でもって、それを受けってすらなく、すぐさま破棄しているので、test_...()側には何も作用しないと言うことですね。
     // Stringの特徴をわかっていれば、実はこのエクササイズ、help...()のコードを読まなくても答えを断定できます。
