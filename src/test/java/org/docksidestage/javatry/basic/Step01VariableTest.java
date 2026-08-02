@@ -95,9 +95,14 @@ public class Step01VariableTest extends PlainTestCase {
      */
     // done inoue [いいね] 実験Goodです。 by jflute (2026/07/16)
     // #1on1: ちゃちゃっと実験する環境を整えておくってのも大事 (2026/07/21)
-    // TODO inoue [読み物課題] よければ、以下のページを参考に by jflute (2026/07/16)
+    // TODO done inoue [読み物課題] よければ、以下のページを参考に by jflute (2026/07/16)
     // // Java Beginner's Hint - プリミティブ型とラッパー型 | DBFlute
     // https://dbflute.seasar.org/ja/manual/topic/programming/java/beginners.html#primitivewrapper
+    // オートボクシングによりvalue.of()をいちいち描かなくて良くなったのは便利。だがプリミティブ型とラッパー型が初学者だとこんがらがる要因の一つにもなっていそう。
+    // nullが絶対に入らない場合にプリミティブ型を使うということだが、ということはnullが入って欲しくないデータをスキーマで定義するときは使うべき？
+    // けどそこまで厳密にするべきなのか？アノテーションなどを併用して使うとしたらそこまでしなくても良い？
+    // apiの都合を考えるのがなんだかんだ良いか
+    // 確かにNullPointerExceptionで発見できない場合の方がきつい
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_basic() {
@@ -111,7 +116,7 @@ public class Step01VariableTest extends PlainTestCase {
     値渡しだからlandを代入後に変更しても変わらない→Javaにもポインタってある？→ポインタはないが参照がある→ new ${variable_name}でオブジェクトのインスタンスを作ったときに参照が格納される
     コンストラクタみたいなイメージでいいんかな
      */
-    // TODO inoue [ふぉろー] Javaにはポインタ参照はあるけどポインタ操作(演算など)はできないとよく聞きます by jflute (2026/07/16)
+    // TODO done inoue [ふぉろー] Javaにはポインタ参照はあるけどポインタ操作(演算など)はできないとよく聞きます by jflute (2026/07/16)
     // オブジェクト型の変数に入っているのはあくまでアドレスです。どこかのメモリ上のインスタンスを指し示しています。
     //
     // sea = land; の行で、seaもlandも同じアドレスを一瞬持ちます。
@@ -200,8 +205,21 @@ public class Step01VariableTest extends PlainTestCase {
     instanceBroadway初期化していないはずだからnull -> 正しい　-> Javaは絶対に初期化しなくて良い？　→ ローカル変数ではダメ、グローバルなら可？
     → グローバル変数というものはJavaにはない。　クラス変数やインスタン変数なら可能 → 規定の初期値が入る　→ 今回はインスタンス変数に当たる
      */
-    // TODO inoue 文法的にはグローバル変数はなく、何かしらに所属する変数ということにはなります by jflute (2026/07/16)
+    // TODO done inoue 文法的にはグローバル変数はなく、何かしらに所属する変数ということにはなります by jflute (2026/07/16)
     // ただ、クラス変数(static変数) で public だったら、実質的というか概念的なグローバル変数も作れますが。
+    // こんな感じですかね
+    //    public static class ExClsGlobal {
+    //
+    //        private ExClsGlobal() {};
+    //
+    //        public static int globalInt = 10;
+    //        public static String globalStr = "global";
+    //    }
+    //
+    //    public void test_global() {
+    //        log(ExClsGlobal.globalInt);
+    //        log(ExClsGlobal.globalStr);
+    //    }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_int() {
@@ -212,7 +230,7 @@ public class Step01VariableTest extends PlainTestCase {
     そういえばprivate修飾子ってpythonと一緒？→一緒そう→クラス内なら呼び出せる
     protectedとprivateの違い→protectedはサブクラスと同一パッケージでも呼び出し可能、privateはクラス内のみ
      */
-    // TODO inoue Javaのprotectedはちょっとへんてこりんで、パッケージスコープも混ざってます by jflute (2026/07/16)
+    // TODO done inoue Javaのprotectedはちょっとへんてこりんで、パッケージスコープも混ざってます by jflute (2026/07/16)
     // ただ、紛らわしいので、protectedのパッケージスコープ特徴はあまり使わず、継承スコープのみでprotectedを意識することが多いです。
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -230,9 +248,11 @@ public class Step01VariableTest extends PlainTestCase {
         instanceMagiclamp = "magician";
         helpInstanceVariableViaMethod(instanceMagiclamp);
         String sea = instanceBroadway + "|" + instanceDockside + "|" + instanceHangar + "|" + instanceMagiclamp;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => bbb|1|null|magician
     }
-    // TODO inoue ここは飛ばしてる？ by jflute (2026/07/16)
+    // TODO done inoue ここは飛ばしてる？ by jflute (2026/07/16)
+    // instanceDocksideはプリミティブ型だから０で初期化され、helpInstanceVariableviaMethod()でインクリメントされているから1
+    // instanceBroadwayは他の変数が関数内で定義されているだけ、instanceMagiclampも同様（引数でアドレスのコピーを渡し、=でコピー先をburnにしている）
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
         instanceBroadway = "bigband";
@@ -275,13 +295,48 @@ public class Step01VariableTest extends PlainTestCase {
         StringBuilder sea = new StringBuilder("harbor");
         int land = 415;
         helpMethodArgumentMethodcall(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor416
     }
 
     private void helpMethodArgumentMethodcall(StringBuilder sea, int land) {
         ++land;
         sea.append(land);
     }
+
+    // StringBuilder() - 指定された文字列の内容で初期化されたStringBuilderを構築する。初期容量は16に文字列引数の長さを加えた値になる。
+    // StringBuilder -> 文字列の組み立てや書き換えに利用
+    // Stringはイミュータブルだから必要 -> + で文字列結合繰り返すのはメモリ効率悪い
+    // 追加が16文字を超えた場合はどうなる？→ より大きなスペースが作り直されるため大丈夫
+    //public AbstractStringBuilder append(String str) {
+    //        if (str == null) -> nullチェック
+    //            return appendNull();　→ 早期リターン
+    //        int len = str.length();
+    //        ensureCapacityInternal(count + len);　→ ここでメモリ確保
+    //        str.getChars(0, len, value, count);
+    //        count += len;
+    //        return this;
+    //    }
+    //
+    // これでメモリをチェックし、足りない場合は大きなメモリを確保しなおしている
+    // private void ensureCapacityInternal(int minimumCapacity) {
+    //        // overflow-conscious code
+    //        if (minimumCapacity - value.length > 0) {
+    //            value = Arrays.copyOf(value,
+    //                    newCapacity(minimumCapacity));
+    //        }
+    //    }
+    //
+    // private int newCapacity(int minCapacity) {
+    //        // overflow-conscious code
+    //        int newCapacity = (value.length << 1) + 2;　→ 左シフトで*2+2
+    //        if (newCapacity - minCapacity < 0) {
+    //            newCapacity = minCapacity;
+    //        }
+    //        return (newCapacity <= 0 || MAX_ARRAY_SIZE - newCapacity < 0)
+    //            ? hugeCapacity(minCapacity)
+    //            : newCapacity;
+    //    }
+    //
 
     // -----------------------------------------------------
     //                                   Variable Assignment
@@ -291,7 +346,7 @@ public class Step01VariableTest extends PlainTestCase {
         StringBuilder sea = new StringBuilder("harbor");
         int land = 415;
         helpMethodArgumentVariable(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor
     }
 
     private void helpMethodArgumentVariable(StringBuilder sea, int land) {
@@ -299,6 +354,8 @@ public class Step01VariableTest extends PlainTestCase {
         String seaStr = sea.toString(); // is "harbor"
         sea = new StringBuilder(seaStr).append(land);
     }
+    // やっていることは前と一緒だが、最後に= newで新たな箱を作成している
+    // 元のseaが置き換わるわけではない
 
     // ===================================================================================
     //                                                                           Challenge
@@ -319,8 +376,15 @@ public class Step01VariableTest extends PlainTestCase {
      * o すべての変数をlog()でカンマ区切りの文字列で表示
      * </pre>
      */
+
+    private int piari;
+
     public void test_variable_writing() {
         // define variables here
+        String sea = "mystic";
+        Integer land = null;
+
+        log(sea + "," + land + "," + piari);
     }
 
     // ===================================================================================
