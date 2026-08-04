@@ -95,7 +95,7 @@ public class Step01VariableTest extends PlainTestCase {
      */
     // done inoue [いいね] 実験Goodです。 by jflute (2026/07/16)
     // #1on1: ちゃちゃっと実験する環境を整えておくってのも大事 (2026/07/21)
-    // TODO done inoue [読み物課題] よければ、以下のページを参考に by jflute (2026/07/16)
+    // done inoue [読み物課題] よければ、以下のページを参考に by jflute (2026/07/16)
     // // Java Beginner's Hint - プリミティブ型とラッパー型 | DBFlute
     // https://dbflute.seasar.org/ja/manual/topic/programming/java/beginners.html#primitivewrapper
     // オートボクシングによりvalue.of()をいちいち描かなくて良くなったのは便利。だがプリミティブ型とラッパー型が初学者だとこんがらがる要因の一つにもなっていそう。
@@ -103,6 +103,18 @@ public class Step01VariableTest extends PlainTestCase {
     // けどそこまで厳密にするべきなのか？アノテーションなどを併用して使うとしたらそこまでしなくても良い？
     // apiの都合を考えるのがなんだかんだ良いか
     // 確かにNullPointerExceptionで発見できない場合の方がきつい
+
+    // TODO inoue いや本当に、プリミティブ型とラッパー型は賛否両論だった印象です。 by jflute (2026/08/05)
+    // なので、プリミティブ型がない言語もあったりするわけです。
+    // Javaの出た時期を考えると、すべてがオブジェクト、というプログラミングがインフラ的に許されづらかったのかなぁと。
+    // 
+    // DBのデータに対しては、ほとんどラッパー型が使われてる印象です。
+    // NotNull制約の付いてないカラムの値を取る時、NotNull制約あってもSQLのselect句で選択してない時、
+    // nullを許容するラッパー型の方が相性が良いので。
+    // あと、APIのリクエスト/レスポンスもDBデータも、Java上ではインスタンス変数で表現することが多いので、
+    // プリミティブ型だとデフォルトの0とかfalseが入ってしまうのが都合悪いこともあります。
+    // やってきたデータが項目として列挙されてないのに、0とかfalseだと業務的には正確ではないので。
+    // なので、そういうときは、とても珍しい、booleanのオブジェクト Boolean を使うことがあります。
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_basic() {
@@ -116,7 +128,7 @@ public class Step01VariableTest extends PlainTestCase {
     値渡しだからlandを代入後に変更しても変わらない→Javaにもポインタってある？→ポインタはないが参照がある→ new ${variable_name}でオブジェクトのインスタンスを作ったときに参照が格納される
     コンストラクタみたいなイメージでいいんかな
      */
-    // TODO done inoue [ふぉろー] Javaにはポインタ参照はあるけどポインタ操作(演算など)はできないとよく聞きます by jflute (2026/07/16)
+    // done inoue [ふぉろー] Javaにはポインタ参照はあるけどポインタ操作(演算など)はできないとよく聞きます by jflute (2026/07/16)
     // オブジェクト型の変数に入っているのはあくまでアドレスです。どこかのメモリ上のインスタンスを指し示しています。
     //
     // sea = land; の行で、seaもlandも同じアドレスを一瞬持ちます。
@@ -205,7 +217,7 @@ public class Step01VariableTest extends PlainTestCase {
     instanceBroadway初期化していないはずだからnull -> 正しい　-> Javaは絶対に初期化しなくて良い？　→ ローカル変数ではダメ、グローバルなら可？
     → グローバル変数というものはJavaにはない。　クラス変数やインスタン変数なら可能 → 規定の初期値が入る　→ 今回はインスタンス変数に当たる
      */
-    // TODO done inoue 文法的にはグローバル変数はなく、何かしらに所属する変数ということにはなります by jflute (2026/07/16)
+    // done inoue 文法的にはグローバル変数はなく、何かしらに所属する変数ということにはなります by jflute (2026/07/16)
     // ただ、クラス変数(static変数) で public だったら、実質的というか概念的なグローバル変数も作れますが。
     // こんな感じですかね
     //    public static class ExClsGlobal {
@@ -220,6 +232,8 @@ public class Step01VariableTest extends PlainTestCase {
     //        log(ExClsGlobal.globalInt);
     //        log(ExClsGlobal.globalStr);
     //    }
+    // TODO inoue [いいね] ハッハッハ、ハイパーグローバル変数ですね(^^ by jflute (2026/08/05)
+    // そういえば昔、研修用のアプリ制作で、ログイン情報をセッションじゃなくてstaticに持ってしまった方が...笑
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_int() {
@@ -230,7 +244,7 @@ public class Step01VariableTest extends PlainTestCase {
     そういえばprivate修飾子ってpythonと一緒？→一緒そう→クラス内なら呼び出せる
     protectedとprivateの違い→protectedはサブクラスと同一パッケージでも呼び出し可能、privateはクラス内のみ
      */
-    // TODO done inoue Javaのprotectedはちょっとへんてこりんで、パッケージスコープも混ざってます by jflute (2026/07/16)
+    // done inoue Javaのprotectedはちょっとへんてこりんで、パッケージスコープも混ざってます by jflute (2026/07/16)
     // ただ、紛らわしいので、protectedのパッケージスコープ特徴はあまり使わず、継承スコープのみでprotectedを意識することが多いです。
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -250,9 +264,10 @@ public class Step01VariableTest extends PlainTestCase {
         String sea = instanceBroadway + "|" + instanceDockside + "|" + instanceHangar + "|" + instanceMagiclamp;
         log(sea); // your answer? => bbb|1|null|magician
     }
-    // TODO done inoue ここは飛ばしてる？ by jflute (2026/07/16)
+    // done inoue ここは飛ばしてる？ by jflute (2026/07/16)
     // instanceDocksideはプリミティブ型だから０で初期化され、helpInstanceVariableviaMethod()でインクリメントされているから1
     // instanceBroadwayは他の変数が関数内で定義されているだけ、instanceMagiclampも同様（引数でアドレスのコピーを渡し、=でコピー先をburnにしている）
+    // TODO inoue [いいね] "引数でアドレスのコピーを渡し" という表現が完璧です by jflute (2026/08/05)
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
         instanceBroadway = "bigband";
@@ -337,6 +352,10 @@ public class Step01VariableTest extends PlainTestCase {
     //            : newCapacity;
     //    }
     //
+    // TODO inoue [いいね] ensureCapacityInternal()のコード、1on1で一緒に読もうと思ったら先に読まれた笑 by jflute (2026/08/05)
+    // StringBuilderに限らず、ArrayListもそうですが、動的な配列ってのは存在しないので、
+    // ラップして動的な配列を演出しているだけ、ってことなんですよね。
+    // メモリ的には若干の無駄が生じますが、利便性を優先していると。
 
     // -----------------------------------------------------
     //                                   Variable Assignment
@@ -356,6 +375,7 @@ public class Step01VariableTest extends PlainTestCase {
     }
     // やっていることは前と一緒だが、最後に= newで新たな箱を作成している
     // 元のseaが置き換わるわけではない
+    // TODO inoue [いいね] 別の新しいインスタンスでappend()しているだけですからね。良い理解です by jflute (2026/08/05)
 
     // ===================================================================================
     //                                                                           Challenge
