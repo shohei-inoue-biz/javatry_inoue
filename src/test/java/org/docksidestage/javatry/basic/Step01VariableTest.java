@@ -104,7 +104,7 @@ public class Step01VariableTest extends PlainTestCase {
     // apiの都合を考えるのがなんだかんだ良いか
     // 確かにNullPointerExceptionで発見できない場合の方がきつい
 
-    // TODO inoue いや本当に、プリミティブ型とラッパー型は賛否両論だった印象です。 by jflute (2026/08/05)
+    // done inoue いや本当に、プリミティブ型とラッパー型は賛否両論だった印象です。 by jflute (2026/08/05)
     // なので、プリミティブ型がない言語もあったりするわけです。
     // Javaの出た時期を考えると、すべてがオブジェクト、というプログラミングがインフラ的に許されづらかったのかなぁと。
     // 
@@ -232,8 +232,11 @@ public class Step01VariableTest extends PlainTestCase {
     //        log(ExClsGlobal.globalInt);
     //        log(ExClsGlobal.globalStr);
     //    }
-    // TODO inoue [いいね] ハッハッハ、ハイパーグローバル変数ですね(^^ by jflute (2026/08/05)
+    // done inoue [いいね] ハッハッハ、ハイパーグローバル変数ですね(^^ by jflute (2026/08/05)
     // そういえば昔、研修用のアプリ制作で、ログイン情報をセッションじゃなくてstaticに持ってしまった方が...笑
+
+    // #1on1: 新卒研修のお話 (2026/08/05)
+    // #1on1: DB設計の重要性のお話 (2026/08/05)
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_int() {
@@ -267,7 +270,7 @@ public class Step01VariableTest extends PlainTestCase {
     // done inoue ここは飛ばしてる？ by jflute (2026/07/16)
     // instanceDocksideはプリミティブ型だから０で初期化され、helpInstanceVariableviaMethod()でインクリメントされているから1
     // instanceBroadwayは他の変数が関数内で定義されているだけ、instanceMagiclampも同様（引数でアドレスのコピーを渡し、=でコピー先をburnにしている）
-    // TODO inoue [いいね] "引数でアドレスのコピーを渡し" という表現が完璧です by jflute (2026/08/05)
+    // done inoue [いいね] "引数でアドレスのコピーを渡し" という表現が完璧です by jflute (2026/08/05)
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
         instanceBroadway = "bigband";
@@ -352,10 +355,17 @@ public class Step01VariableTest extends PlainTestCase {
     //            : newCapacity;
     //    }
     //
-    // TODO inoue [いいね] ensureCapacityInternal()のコード、1on1で一緒に読もうと思ったら先に読まれた笑 by jflute (2026/08/05)
+    // done inoue [いいね] ensureCapacityInternal()のコード、1on1で一緒に読もうと思ったら先に読まれた笑 by jflute (2026/08/05)
     // StringBuilderに限らず、ArrayListもそうですが、動的な配列ってのは存在しないので、
     // ラップして動的な配列を演出しているだけ、ってことなんですよね。
     // メモリ的には若干の無駄が生じますが、利便性を優先していると。
+
+    // #1on1: 中身がみないと怖い、という感覚素晴らしい (2026/08/05)
+    // 書いてきた経験があるから、(AIのコードを)肌感で間違いとかを見つけやすい。
+
+    // #1on1: StringBuilder や ArrayList のコードを読んだ (2026/08/05)
+    // capacityが16はなぜ？ → 少なくとも16自体はキリの良い数字。
+    // そんなにappend()しないケースにも備えたのでは？
 
     // -----------------------------------------------------
     //                                   Variable Assignment
@@ -375,7 +385,7 @@ public class Step01VariableTest extends PlainTestCase {
     }
     // やっていることは前と一緒だが、最後に= newで新たな箱を作成している
     // 元のseaが置き換わるわけではない
-    // TODO inoue [いいね] 別の新しいインスタンスでappend()しているだけですからね。良い理解です by jflute (2026/08/05)
+    // done inoue [いいね] 別の新しいインスタンスでappend()しているだけですからね。良い理解です by jflute (2026/08/05)
 
     // ===================================================================================
     //                                                                           Challenge
