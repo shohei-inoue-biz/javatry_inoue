@@ -60,6 +60,15 @@ public class Step01VariableTest extends PlainTestCase {
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
+    public void test_variable_reassigned_mutable() {
+        StringBuilder sea = new StringBuilder("mystic");
+        StringBuilder land = new StringBuilder("oneman");
+        sea = land;
+        land.append("'s dreams");
+        log(sea); // your answer? => 
+    }
+
+    /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_int() {
         int sea = 94;
         int land = 415;
