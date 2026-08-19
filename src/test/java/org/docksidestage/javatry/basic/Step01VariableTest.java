@@ -429,11 +429,22 @@ public class Step01VariableTest extends PlainTestCase {
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
      * your question here (ここにあなたの質問を):
-     * 
+     * What string is logged at hte method end?
+     * (滅ソッド終了時にlog()で出力される文字列は？)
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
     public void test_variable_yourExercise() {
-        // write your code here
+        String sea = "mystic";
+        Integer land = 100;
+        helperYourExercise(sea, land);
+
+        log(sea + "|" + land);
+        // my answer? => mystic|100
+    }
+
+    private void helperYourExercise(String sea, Integer land) {
+        sea.concat("discovery");
+        land = land + 10;
     }
 }

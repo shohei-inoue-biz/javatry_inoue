@@ -52,8 +52,10 @@ public class Step02IfForTest extends PlainTestCase {
         } else {
             sea = 7;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 7
     }
+    // シンプルなif文、904以上は2001, それ以外は7なので7
+    // javaも比較演算子等も他言語（cなど）と基本的一緒？
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_if_elseif_basic() {
@@ -67,8 +69,10 @@ public class Step02IfForTest extends PlainTestCase {
         } else {
             sea = 9;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 7
     }
+    // if文はelse ifで繋がっていれば比較演算子の評価がtrueになった時点でif文から抜けるため、7
+    // したのにまで適応させたいならif文を分けてあげる必要あるはず
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_if_elseif_nested() {
@@ -107,8 +111,12 @@ public class Step02IfForTest extends PlainTestCase {
         if (land) {
             sea = 10;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 10
     }
+    // 最初はsea=904, land=falseだから　sea >= 903 || land　の条件式に入り、偶数だからsea=1808.
+    // その後のif文でland = trueに変わり、次のif文でsea = 8になる. 上位ネストのelse文は無視で(sea >= 9 || (sea > 7 && sea < 9)の条件式でsea=8だから入るが、引いて足しているので8のまま
+    // 最後にlandがtrueだからsea=10
+    // というかlandだけおっとけばlandがtrueか否かでsea=10になるか判定できた...
 
     // ===================================================================================
     //                                                                       for Statement
@@ -123,8 +131,13 @@ public class Step02IfForTest extends PlainTestCase {
                 sea = stage;
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => dockside
     }
+    // stageList.size() = 4で、1番目の要素を表示
+    // pythonだとenumerateで取り出しやすいがjcだとこんな感じの書き方になるよな
+    // javaでもenumerateのようなインデックスと要素どちらも取り出せるものないかな
+    // listIteratorというのがあるらしい...
+    // 関数型インタフェースで定義してあげるのが一般？AtomicIntegerなるものもあるのか、ここら辺よくわかってない...
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_foreach_basic() {
@@ -133,8 +146,10 @@ public class Step02IfForTest extends PlainTestCase {
         for (String stage : stageList) {
             sea = stage;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => magiclamp
     }
+    // これで要素に対するfor文回せるんだ
+    // for文でループごとにリストの要素がseaに書き換えられ、最後のmagiclampが出力される認識であっているはず
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_foreach_continueBreak() {
@@ -149,8 +164,10 @@ public class Step02IfForTest extends PlainTestCase {
                 break;
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => hangar
     }
+    // startsWithは文字列の最初に与えたプレフィックスから始まるかを判断するもの、containsは含まれているか判断するものだったはず。
+    // hangarでbreakになる
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_listforeach_basic() {
@@ -165,8 +182,12 @@ public class Step02IfForTest extends PlainTestCase {
             }
         });
         String sea = sb.toString();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => dockside
     }
+    // iが含まれているのはdockside、その時点でreturnに入る
+    // forEachは内部でラムダ式を利用するイメージであっている？
+    // 中みたら、テンプレート型でacceptに渡されるようになっていた
+    // acceptって、コンシューマと言われるやつ？ラムダ式の実態というイメージで良いのか？
 
     // ===================================================================================
     //                                                                           Challenge
