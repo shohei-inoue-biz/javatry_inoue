@@ -420,6 +420,10 @@ public class Step01VariableTest extends PlainTestCase {
     // #1on1: チーム全体の開発スピード、改善 (2026/08/05)
     // 現場のやり方をヒアリングしつつ、ちょこっと伺ってみるとか。
 
+    // #1on1: よもやま: Aなのか？Bなのか？そもそも何を開発してるのか？に影響される (2026/08/20)
+    // ネット上だと、その前提がスキップされて議論されることが多いので、絶対に平行線。
+    // AIのコード読むか？読まないか？議論から派生して。
+
     // ===================================================================================
     //                                                                           Good Luck
     //                                                                           =========
@@ -441,6 +445,7 @@ public class Step01VariableTest extends PlainTestCase {
 
         log(sea + "|" + land);
         // my answer? => mystic|100
+        // #1on1: immutableの引数のメリットを実感できるエクササイズ (2026/08/20)
     }
 
     private void helperYourExercise(String sea, Integer land) {
