@@ -89,7 +89,7 @@ public class Step03DataTypeTest extends PlainTestCase {
     //                                                                              Object
     //                                                                              ======
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
-    public void test_datatype_object() {
+    public void test_datatype_object_basic() {
         St3ImmutableStage stage = new St3ImmutableStage("hangar");
         String sea = stage.getStageName();
         log(sea); // your answer? => 
@@ -106,5 +106,16 @@ public class Step03DataTypeTest extends PlainTestCase {
         public String getStageName() {
             return stageName;
         }
+    }
+
+    // ===================================================================================
+    //                                                                           Challenge
+    //                                                                           =========
+    /**
+     * Make new method to St3ImmutableStage that appends suffix to stageName keeping immutable concept. <br>
+     * (St3ImmutableStage, immutableのコンセプトを維持したまま、stageNameにsuffixを追加するメソッドを追加してみましょう)
+     */
+    public void test_datatype_object_immutable_method() {
+        // your confirmation code here
     }
 }
