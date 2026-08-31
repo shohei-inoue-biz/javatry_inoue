@@ -131,7 +131,7 @@ public class Step02IfForTest extends PlainTestCase {
     //
     // あと、一つギャンブルに負けても、少し読み進めたことで、また次のギャンブルポイントが見つけることも。
     // それでもっかいフォーカス読みをすれば良い。3,4回繰り返しても、網羅読みをするよりも速い(ことも多い)。
-    // 
+    //
     // 仮説思考的なソースコードリーディングとも言える。
 
     // ===================================================================================
@@ -233,8 +233,28 @@ public class Step02IfForTest extends PlainTestCase {
      * (prepareStageList()のリストから "a" が含まれているものだけのリストを作成して、それをループで回してログに表示しましょう。(Stream APIなしで))
      */
     public void test_iffor_making() {
-        // write if-for here
+        List<String> stageList = prepareStageList();
+        List<String> filteredList = new ArrayList<>();
+        for (String stage : stageList) {
+            if (stage.contains("a")) {
+                filteredList.add(stage);
+            }
+        }
+
+        for (String stage : filteredList) {
+            log(stage);
+        }
     }
+    // stream apiとは？→filterとかmapのことね
+    // リスト作成しなくて、シンプルに書くなら？
+    //    public void test_iffor_making_simple() {
+    //        for (String stage : prepareStageList()) {
+    //            if (stage.contains("a")) {
+    //                log(stage);
+    //            }
+    //        }
+    //    }
+
 
     // ===================================================================================
     //                                                                           Good Luck
@@ -257,6 +277,29 @@ public class Step02IfForTest extends PlainTestCase {
         }
         log(sea); // should be same as before-fix
     }
+    // foreachはラムダ式だからbreakとcontinue使えないんだ
+    // というか、ミュータブルな変数もダメじゃん→参照の変更がダメ→リストなら使えるか
+    public void test_iffor_refactor_foreach_to_forEach_ans() {
+        List<String> stageList = prepareStageList();
+
+        // ga検知用flg
+        boolean[] isBroken = new boolean[1];
+        String[] sea = new String[1];
+
+        stageList.forEach(stage -> {
+            if (isBroken[0] || stage.startsWith("br")) {
+                return;
+            }
+
+            sea[0] = stage;
+            if (stage.contains("ga")) {
+                isBroken[0] = true;
+            }
+        });
+
+        log(sea[0]);
+    }
+
 
     /**
      * Make your original exercise as question style about if-for statement. <br>
@@ -264,12 +307,30 @@ public class Step02IfForTest extends PlainTestCase {
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
      * your question here (ここにあなたの質問を):
-     * 
+     * メソッド終了時の変数 sea の中身は？
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
     public void test_iffor_yourExercise() {
-        // write your code here
+        List<String> stageList = prepareStageList();
+        StringBuilder sea = new StringBuilder();
+        int count = 0;
+
+        for (int i = stageList.size() - 1; i >= 0; i--) {
+            String stage = stageList.get(i);
+            if (stage.length() < 7) {
+                continue;
+            }
+            if (stage.endsWith("e")) {
+                sea.append(stage, 0, 3);
+                count++;
+            } else if (count > 0) {
+                break;
+            } else {
+                sea.append(stage.substring(stage.length() - 2));
+            }
+        }
+        log(sea.toString()); // your answer? => mpdoc
     }
 
     // ===================================================================================

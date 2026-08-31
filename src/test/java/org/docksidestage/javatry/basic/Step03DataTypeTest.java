@@ -54,8 +54,16 @@ public class Step03DataTypeTest extends PlainTestCase {
             BigDecimal addedDecimal = amba.add(new BigDecimal(land));
             sea = String.valueOf(addedDecimal);
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 18.4
     }
+    // dstoreはtrueだからif文には入る
+    // addedDecicalの値が出力される
+    // amba(9.4)にland足した値がaddedDecimal
+    // land = -1 + (9 + 1)
+    // plathMonthはdate.plathMonthを利用
+    // date型って内部ちゃんと計算されているんだ
+    // 閏年とかのハンドリングとかってされているのかな？
+
 
     // ===================================================================================
     //                                                                           Primitive
@@ -82,8 +90,13 @@ public class Step03DataTypeTest extends PlainTestCase {
         if ((int) dstore > piari) {
             sea = 0;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 2
     }
+    // キャストしているからif文のdstoreは１なので入らない
+    // dohotelは常にtrueだから一つ目のif文は入る
+    // キャストされているからlandは元のまま
+    //　同様にseaもlandがbyteでキャストされるから127
+    // 最後に、amdaが入るから2
 
     // ===================================================================================
     //                                                                              Object
@@ -92,8 +105,11 @@ public class Step03DataTypeTest extends PlainTestCase {
     public void test_datatype_object_basic() {
         St3ImmutableStage stage = new St3ImmutableStage("hangar");
         String sea = stage.getStageName();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => hanger
     }
+    // コンストラクタを記述しているだけ
+    // pythonと同じような記述
+    // class名の関数を定義するとコンストラクタとして働くようなイメージで良いのかな？
 
     private static class St3ImmutableStage {
 
