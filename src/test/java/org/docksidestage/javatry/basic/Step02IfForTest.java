@@ -81,7 +81,7 @@ public class Step02IfForTest extends PlainTestCase {
         if (sea > 904) {
             sea = 2001;
             sea = sea++ * 2;
-        } else if (land && sea >= 904) {
+        } else if (land && (sea * 13 < 11752 != !false)) {
             sea = 7;
             sea = ++sea * 2;
         } else if (sea >= 903 || land) {
