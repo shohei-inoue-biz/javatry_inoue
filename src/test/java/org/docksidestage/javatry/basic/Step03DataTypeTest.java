@@ -63,7 +63,8 @@ public class Step03DataTypeTest extends PlainTestCase {
     // plathMonthはdate.plathMonthを利用
     // date型って内部ちゃんと計算されているんだ
     // 閏年とかのハンドリングとかってされているのかな？
-
+    // #1on1: されてると思う。少なくとも昔のGregorianCalendarはサポートしてたはず。 (2026/09/01)
+    // ちなみに、JapaneseImperialCalendar のコード見てみた。令和がちゃんと追加されていた！
 
     // ===================================================================================
     //                                                                           Primitive
@@ -98,18 +99,28 @@ public class Step03DataTypeTest extends PlainTestCase {
     //　同様にseaもlandがbyteでキャストされるから127
     // 最後に、amdaが入るから2
 
+    // #1on1: $ロボットではキャストめっちゃ使ってた (2026/09/01)
+    // 組み込み型では必要になることではあると思う。
+    // 書かざるを得ない時はしょうがない。まあ可読性のためにコメントとかで補足しておくかな。
+    //
+    // 雑談:
+    // $座標変換とかもやってた
+    // 世の中のITの技術話、どうしても業務システム、webサービスベースで語られることが多い。
+
     // ===================================================================================
     //                                                                              Object
     //                                                                              ======
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_datatype_object_basic() {
-        St3ImmutableStage stage = new St3ImmutableStage("hangar");
+        String originalStageName = "hangar";
+        St3ImmutableStage stage = new St3ImmutableStage(originalStageName);
         String sea = stage.getStageName();
         log(sea); // your answer? => hanger
     }
     // コンストラクタを記述しているだけ
     // pythonと同じような記述
     // class名の関数を定義するとコンストラクタとして働くようなイメージで良いのかな？
+    // #1on1: yes (2026/09/01)
 
     private static class St3ImmutableStage {
 

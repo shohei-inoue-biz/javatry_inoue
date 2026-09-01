@@ -220,7 +220,23 @@ public class Step02IfForTest extends PlainTestCase {
     // o forEach()メソッド  // 20年目くらい
     //
     // forEach()メソッドの良いところは？
-    // TODO jflute ↑は、foreach書き換えエクササイズをやってもらってから考える (2026/08/20)
+    // done jflute ↑は、foreach書き換えエクササイズをやってもらってから考える (2026/08/20)
+    // #1on1: forEach()メソッドの特徴はよくわかったとして... (2026/09/01)
+    // 改めて、forEach()メソッドは何が良い？
+    //
+    // o 拡張for文         :: continue, breakできる、外側のローカル変数を書き換えられる
+    // o forEach()メソッド :: continue, breakできない、外側のローカル変数を書き換えられない
+    //
+    // $外側を書き換えられないのいいっすね、安全
+    // もう一つできないからこそ得られるもの: $可読性
+    // 
+    // いかに上手に制限デザインするか？
+    // 外側のローカル変数を書き換えないループだったら、forEach()メソッドの方がフィットする。
+    // 適材適所のループ提供になっていると言える。
+    //
+    // よもやま: 適材適所すぎるのもつらいのジレンマ (2026/09/01)
+    // 適材適所ってのは使い分けの判断コストが掛かる。そのチリツモがいやだったこともある。
+    // バランスのジレンマをずっと抱えている。
 
     // #1on1: ビジネスサイドと開発サイドの意思疎通のお話 (2026/08/20)
     // システマチックで解決するか？人間的距離感で解決するか？ハイブリッドか？
@@ -254,7 +270,7 @@ public class Step02IfForTest extends PlainTestCase {
     //            }
     //        }
     //    }
-
+    // #1on1: Stream API, step8にて深掘り予定 (2026/09/01)
 
     // ===================================================================================
     //                                                                           Good Luck
@@ -277,20 +293,25 @@ public class Step02IfForTest extends PlainTestCase {
         }
         log(sea); // should be same as before-fix
     }
+
     // foreachはラムダ式だからbreakとcontinue使えないんだ
     // というか、ミュータブルな変数もダメじゃん→参照の変更がダメ→リストなら使えるか
+    // #1on1: Javaのコンパイラーからすれば、Lambda式の中はforの中かどうかはわかってない (2026/09/01)
+    // #1on1: なぜ外側の変数の再代入がダメなのか？(Javaのコンセプト) (2026/09/01)
+    // $引数と同じように箱自体は旅立ってない？
+    // 内部的には、コンストラクターで値(住所)を渡しているイメージ。
+    // ローカル変数というコンセプトからすると、別クラス別メソッドで他のメソッドのローカル変数を修正できたらカオス。
+    // 仮に再代入をできるようにしたとしたら、時系列的な矛盾も発生する。それを無理やり許すとカオスだしコンセプトも微妙。
     public void test_iffor_refactor_foreach_to_forEach_ans() {
         List<String> stageList = prepareStageList();
 
         // ga検知用flg
         boolean[] isBroken = new boolean[1];
         String[] sea = new String[1];
-
         stageList.forEach(stage -> {
             if (isBroken[0] || stage.startsWith("br")) {
                 return;
             }
-
             sea[0] = stage;
             if (stage.contains("ga")) {
                 isBroken[0] = true;
@@ -298,8 +319,11 @@ public class Step02IfForTest extends PlainTestCase {
         });
 
         log(sea[0]);
-    }
 
+        // #1on1: Lambdaを使うか？無名インナークラスを使うか？ (2026/09/01)
+        // 業務プログラムの場合、ほとんど浸透してるメソッドの呼び出しで使うことがほとんど。
+        // フレームワークの中で、超レアなクラスの呼び出しとかの時にあえて使わないことはちょいある(by jflute)。
+    }
 
     /**
      * Make your original exercise as question style about if-for statement. <br>
