@@ -133,6 +133,10 @@ public class Step03DataTypeTest extends PlainTestCase {
         public String getStageName() {
             return stageName;
         }
+
+        public St3ImmutableStage createWithSuffix(String suffix) {
+            return new St3ImmutableStage(stageName + suffix);
+        }
     }
 
     // ===================================================================================
@@ -143,6 +147,13 @@ public class Step03DataTypeTest extends PlainTestCase {
      * (St3ImmutableStage, immutableのコンセプトを維持したまま、stageNameにsuffixを追加するメソッドを追加してみましょう)
      */
     public void test_datatype_object_immutable_method() {
-        // your confirmation code here
+        St3ImmutableStage stage = new St3ImmutableStage("hangar");
+        St3ImmutableStage newStage = stage.createWithSuffix("stage");
+
+        log(stage.getStageName());
+        log(newStage.getStageName());
     }
+
+    // suffixってことは接頭語を追加するようなメソッドを作れば良いのかな
+    // immutableのコンセプトということは書き換えるのではなく、新たにインスタンスを作るイメージ？
 }

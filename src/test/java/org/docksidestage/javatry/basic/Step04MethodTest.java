@@ -35,16 +35,21 @@ public class Step04MethodTest extends PlainTestCase {
      */
     public void test_method_call_basic() {
         String sea = supplySomething();
-        log(sea); // your answer? =>
+        log(sea); // your answer? => over
     }
+    // String型の戻り値だからそのまま帰ってくるはず
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_method_call_many() {
         String sea = functionSomething("mystic");
         consumeSomething(supplySomething());
         runnableSomething();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => mysmys
     }
+    // この関数のスコープで定義しているseaは最初だけなので、最初の置換だけ見れば良い
+    // .replaceの中身のmatcherの仕組みがいまいちわからなかった...
+    // synchronizedは排他制御
+
 
     private String functionSomething(String name) {
         String replaced = name.replace("tic", "mys");
@@ -76,8 +81,11 @@ public class Step04MethodTest extends PlainTestCase {
         if (!land) {
             sea = sea + mutable.getStageName().length();
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 910
     }
+    // 最後に求められているのはsea, helloMutableでseaは直接変更されないので、mysticがmutableのstageNameとして入ることだけ捉えておく。
+    // landはfalseなので！landでif文内に入る
+    // sea(904) + mystic(6)で910
 
     private int helloMutable(int sea, Boolean land, St4MutableStage piari) {
         sea++;
@@ -115,8 +123,12 @@ public class Step04MethodTest extends PlainTestCase {
         }
         ++sea;
         sea = inParkCount;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 100
     }
+    // inParkCountはクラス内のプライベートメソッドで初期値は0(intだから)
+    // hasAnnualPassportは最初にtrueにされている（offAnnualPassportは引数をfalseにするだけなので無関係）
+    // for分内でinParkCountが100回インクリメントされる
+    // seaにinParkCountを代入されるため100（++seaとinParkCountは別なので無視）
 
     private void offAnnualPassport(boolean hasAnnualPassport) {
         hasAnnualPassport = false;
@@ -152,12 +164,34 @@ public class Step04MethodTest extends PlainTestCase {
      */
     public void test_method_making() {
         // use after making these methods
-        //String replaced = replaceCwithB(replaceAwithB("ABC"));
-        //String sea = quote(replaced, "'");
-        //if (isAvailableLogging()) {
-        //    showSea(sea);
-        //}
+        String replaced = replaceCwithB(replaceAwithB("ABC"));
+        String sea = quote(replaced, "'");
+        if (isAvailableLogging()) {
+            showSea(sea); // answer -> BBB
+        }
     }
 
     // write methods here
+    private boolean availableLogging = true;
+
+    private String replaceAwithB(String str) {
+        return str.replace("A", "B");
+    }
+
+    private String replaceCwithB(String str) {
+        return str.replace("C", "B");
+    }
+
+    private String quote(String str, String quotation) {
+        return quotation + str + quotation;
+    }
+
+    private boolean isAvailableLogging() {
+        return availableLogging;
+    }
+
+    private void showSea(String str) {
+        log(str);
+    }
+    // こういうことであっている？
 }
