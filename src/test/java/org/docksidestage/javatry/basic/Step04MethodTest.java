@@ -48,8 +48,14 @@ public class Step04MethodTest extends PlainTestCase {
     }
     // この関数のスコープで定義しているseaは最初だけなので、最初の置換だけ見れば良い
     // .replaceの中身のmatcherの仕組みがいまいちわからなかった...
-    // synchronizedは排他制御
+    // #1on1: 正規表現のコアなところは読むのは大変でしょう (2026/09/25)
+    // リテラル置換でも正規表現でも同じくPattern/Matcherを使っているところが面白い。
 
+    // synchronizedは排他制御
+    // #1on1: Matcher()の synchronized(this) { compile()をスレッドセーフにしている (2026/09/25)
+    // StringBuffer 発見
+    // Matcher appendReplacement(StringBuffer sb, String replacement)
+    // 1.4の時代のクラスなのでStringBuilderさんがいなかった。
 
     private String functionSomething(String name) {
         String replaced = name.replace("tic", "mys");
@@ -174,6 +180,19 @@ public class Step04MethodTest extends PlainTestCase {
     // write methods here
     private boolean availableLogging = true;
 
+    // #1on1: いいね、メソッド定義位置が呼び出し順序と一致していて直感的で把握しやすい (2026/09/25)
+    // $ぼくはけっこう厳しい、配置。
+    // 呼び出し順序 + まとまり
+    // まとまりの存在感がどのくらいか？
+    // 呼び出し順序 + まとまりのハイブリッドで、メソッド間の階層構造を意識して並べている。
+    // (LastaFlute の ActionRequestProcessor の例)
+    //
+    // 既存コードにメソッド追加、(しかるべき場所があるはずなのに)一番下に追加されやすい問題。
+    // おじゃまします感。
+    // 20人が通過して最終的にごちゃごちゃするケース。
+    // 既存コードの「コード体裁デザイン」に注目して修正して欲しい。
+    // 既存コードの「コード体裁デザイン」に責任を持つのは今修正しようとしている人。
+    //
     private String replaceAwithB(String str) {
         return str.replace("A", "B");
     }
@@ -182,6 +201,8 @@ public class Step04MethodTest extends PlainTestCase {
         return str.replace("C", "B");
     }
 
+    // #1on1: いいね、第二引数、わかりやすい (2026/09/25)
+    // 引数名大事。引数名はインターフェースなので、呼び出し側に対するドキュメント。
     private String quote(String str, String quotation) {
         return quotation + str + quotation;
     }
@@ -194,4 +215,5 @@ public class Step04MethodTest extends PlainTestCase {
         log(str);
     }
     // こういうことであっている？
+    // #1on1: あってる (2026/09/25)
 }

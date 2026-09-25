@@ -134,6 +134,7 @@ public class Step03DataTypeTest extends PlainTestCase {
             return stageName;
         }
 
+        // #1on1: 完璧 (2026/09/25)
         public St3ImmutableStage createWithSuffix(String suffix) {
             return new St3ImmutableStage(stageName + suffix);
         }
