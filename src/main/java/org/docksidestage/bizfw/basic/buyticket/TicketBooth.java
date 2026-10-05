@@ -25,6 +25,7 @@ public class TicketBooth {
     //                                                                          ==========
     private static final int MAX_QUANTITY = 10;
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
+    private static final int TWO_DAY_PRICE = 13200;
 
     // ===================================================================================
     //                                                                           Attribute
@@ -56,17 +57,47 @@ public class TicketBooth {
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
     public void buyOneDayPassport(Integer handedMoney) {
+        validatePurchase(handedMoney, ONE_DAY_PRICE);
+        sellPassport(ONE_DAY_PRICE);
+    }
+
+    public int buyTwoDayPassport(Integer handedMoney) {
+        validatePurchase(handedMoney, TWO_DAY_PRICE);
+        sellPassport(TWO_DAY_PRICE);
+
+        return  handedMoney - TWO_DAY_PRICE;
+    }
+
+    private void validatePurchase(Integer handedMoney, Integer dayPrice) {
+        checkHandedMoney(handedMoney, dayPrice);
+        checkQuantity();
+    }
+
+    private void checkHandedMoney(Integer handedMoney, Integer dayPrice) {
+        if (handedMoney == null) {
+            throw new IllegalArgumentException("handedMoney is required");
+        }
+        if (handedMoney < dayPrice) {
+            throw new TicketShortMoneyException("Short money: " + handedMoney);
+        }
+    }
+
+    private void checkQuantity() {
         if (quantity <= 0) {
             throw new TicketSoldOutException("Sold out");
         }
+    }
+
+    private void sellPassport(Integer dayPrice) {
+        addSalesProceeds(dayPrice);
         --quantity;
-        if (handedMoney < ONE_DAY_PRICE) {
-            throw new TicketShortMoneyException("Short money: " + handedMoney);
-        }
-        if (salesProceeds != null) { // second or more purchase
-            salesProceeds = salesProceeds + handedMoney;
-        } else { // first purchase
-            salesProceeds = handedMoney;
+    }
+
+    private void addSalesProceeds(Integer dayPrice) {
+        if  (salesProceeds != null) {
+            salesProceeds += dayPrice;
+        } else {
+            salesProceeds = dayPrice;
         }
     }
 

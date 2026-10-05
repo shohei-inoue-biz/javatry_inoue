@@ -43,28 +43,33 @@ public class Step05ClassTest extends PlainTestCase {
         TicketBooth booth = new TicketBooth();
         booth.buyOneDayPassport(7400);
         int sea = booth.getQuantity();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 9
     }
+    //　チケットの売買処理かな
+    // クラス変数をデクリメントするから、max--で9
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_class_howToUse_overpay() {
         TicketBooth booth = new TicketBooth();
         booth.buyOneDayPassport(10000);
         Integer sea = booth.getSalesProceeds();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 10000
     }
+    // buyOneDayPassportでsalesProceedsに引数を代入
+    // getSalesProceedsは取得しているだけ
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_class_howToUse_nosales() {
         TicketBooth booth = new TicketBooth();
         Integer sea = booth.getSalesProceeds();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => null
     }
+    // integerはラッパークラスなのでnull
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_class_howToUse_wrongQuantity() {
         Integer sea = doTest_class_ticket_wrongQuantity();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 9
     }
 
     private Integer doTest_class_ticket_wrongQuantity() {
@@ -78,6 +83,7 @@ public class Step05ClassTest extends PlainTestCase {
         }
         return booth.getQuantity();
     }
+    // エラーは出るが持ち金のチェックの前にデクリメントされるため9が返る
 
     // ===================================================================================
     //                                                                           Let's fix
@@ -90,6 +96,8 @@ public class Step05ClassTest extends PlainTestCase {
         Integer sea = doTest_class_ticket_wrongQuantity();
         log(sea); // should be max quantity, visual check here
     }
+    // handMoneyがnullの場合のバリデーションチェックを追加
+    // デクリメントの位置が会計前にあるため変更
 
     /**
      * Fix the problem of sales proceeds increased by handed money. (Don't forget to fix also previous exercise answers) <br>
@@ -101,6 +109,7 @@ public class Step05ClassTest extends PlainTestCase {
         Integer sea = booth.getSalesProceeds();
         log(sea); // should be same as one-day price, visual check here
     }
+    // そのままhandMoneyを返しているのでsalesProceedにはONE_DAY_PRICEを渡す
 
     /**
      * Make method for buying two-day passport (price is 13200). (which can return change as method return value)
@@ -108,14 +117,19 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_letsFix_makeMethod_twoday() {
         // uncomment after making the method
-        //TicketBooth booth = new TicketBooth();
-        //int money = 14000;
-        //int change = booth.buyTwoDayPassport(money);
-        //Integer sea = booth.getSalesProceeds() + change;
-        //log(sea); // should be same as money
+        TicketBooth booth = new TicketBooth();
+        int money = 14000;
+        int change = booth.buyTwoDayPassport(money);
+        Integer sea = booth.getSalesProceeds() + change;
+        log(sea); // should be same as money
 
         // and show two-day passport quantity here
     }
+    // 結果としては売り上げをお釣りと足しているからmoneyになれば良い
+    // 関数をどうしても役割ごとに分けたくなってしまう
+    // なんか微妙な分け方になってしまった
+    // 定数たち変えたいし, DAY_PRICEとかもenumとかにしたくなっちゃうな笑
+
 
     /**
      * Recycle duplicate logics between one-day and two-day by e.g. private method in class. (And confirm result of both before and after) <br>
@@ -126,6 +140,8 @@ public class Step05ClassTest extends PlainTestCase {
         booth.buyOneDayPassport(10000);
         log(booth.getQuantity(), booth.getSalesProceeds()); // should be same as before-fix
     }
+    // ここでやるんかい笑
+
 
     // ===================================================================================
     //                                                                           Challenge
