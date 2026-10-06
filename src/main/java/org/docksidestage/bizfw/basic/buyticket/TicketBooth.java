@@ -61,17 +61,36 @@ public class TicketBooth {
         sellPassport(ONE_DAY_PRICE);
     }
 
+    // TODO inoue twoDayにもJavaDocコメントをお願いします (日本語でOK) by jflute (2026/10/06)
     public int buyTwoDayPassport(Integer handedMoney) {
         validatePurchase(handedMoney, TWO_DAY_PRICE);
         sellPassport(TWO_DAY_PRICE);
 
-        return  handedMoney - TWO_DAY_PRICE;
+        return handedMoney - TWO_DAY_PRICE;
     }
 
     private void validatePurchase(Integer handedMoney, Integer dayPrice) {
+        // #1on1: $checkが納得いかない (2026/10/06) 
+        // $validationの枠組みなのか？DDDの感覚だと...
+        // 業務的なニュアンスで言うと、手渡し金額のチェック、在庫のチェック、と自然。
+        // checkはちょっと曖昧な言葉で、具体的にどうチェックしてるか？が表現されない。
+        // 表現したくないときはフィットする言葉。
+        // もうちょい直接的な表現をしたいとなったら...
+        // e.g. assertHandedMoneyEnough();
+        //
+        // 逆に、checkHandedMoneyShort(); とかは、どっちだと例外が発生する？がわかりにくくて、
+        // 避ける傾向にある。(直接的な表現をしようとしてるのに、どっちが正しい業務か曖昧になる)
+        //
+        // あと、業務的な意味合いで言うと...
+        // checkHandedMoney()は単なる入力チェック。 // validateイメージ
+        // checkQuantity()はシステム内部の状態のチェック。 // コア処理のイメージ
+        //  → ただ、validateでも両方やることはある。
+        //
         checkHandedMoney(handedMoney, dayPrice);
         checkQuantity();
     }
+    // #1on1: $他の人たちってjavatryってどういう風に進めてるのかな？ (2026/10/06)
+    // step1,2,3,4は基礎、個性は5から。
 
     private void checkHandedMoney(Integer handedMoney, Integer dayPrice) {
         if (handedMoney == null) {
@@ -94,7 +113,7 @@ public class TicketBooth {
     }
 
     private void addSalesProceeds(Integer dayPrice) {
-        if  (salesProceeds != null) {
+        if (salesProceeds != null) {
             salesProceeds += dayPrice;
         } else {
             salesProceeds = dayPrice;

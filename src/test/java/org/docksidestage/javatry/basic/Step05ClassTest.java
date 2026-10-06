@@ -111,6 +111,26 @@ public class Step05ClassTest extends PlainTestCase {
     }
     // そのままhandMoneyを返しているのでsalesProceedにはONE_DAY_PRICEを渡す
 
+    // #1on1: バグの特徴２つ (2026/10/06)
+    // o 複数行の流れのバグ: それぞれの行自体は正しく書かれている、前後関係がおかしい
+    //   (今回の場合、異常系が発生しないと事象が発生しない)
+    //
+    // o 単行のロジックのバグ: わりと見つけやすい
+    //
+    // ↑レビューワーとしての視点として重要。
+    // $レビューワーは基本一人
+    //
+    // レビューワー、メインの人、サブの人、明確にしてるしてない話。
+    // 
+    // AIもレビュー。
+    // $自分の実装の確認に使う。プルリクオープンする前に。
+    // $業務のレビューは人間がしっかり。
+    //
+    // AIの高度な実装レビュー、現場でどこまで対応するか？
+    // レビュー工数。ITレビューワー。
+    // より良いコードを残すことに時間を使える。 // 本当か？
+    //
+
     /**
      * Make method for buying two-day passport (price is 13200). (which can return change as method return value)
      * (TwoDayPassport (金額は13200) も買うメソッドを作りましょう (戻り値でお釣りをちゃんと返すように))
@@ -130,7 +150,6 @@ public class Step05ClassTest extends PlainTestCase {
     // なんか微妙な分け方になってしまった
     // 定数たち変えたいし, DAY_PRICEとかもenumとかにしたくなっちゃうな笑
 
-
     /**
      * Recycle duplicate logics between one-day and two-day by e.g. private method in class. (And confirm result of both before and after) <br>
      * (OneDayとTwoDayで冗長なロジックがあったら、クラス内のprivateメソッドなどで再利用しましょう (修正前と修正後の実行結果を確認))
@@ -141,7 +160,6 @@ public class Step05ClassTest extends PlainTestCase {
         log(booth.getQuantity(), booth.getSalesProceeds()); // should be same as before-fix
     }
     // ここでやるんかい笑
-
 
     // ===================================================================================
     //                                                                           Challenge
