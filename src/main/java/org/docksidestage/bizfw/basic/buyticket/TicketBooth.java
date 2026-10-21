@@ -53,24 +53,30 @@ public class TicketBooth {
     /**
      * Buy one-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
+     * @return The ticket of one-day passport. (NotNull)
      * @throws TicketSoldOutException When ticket in booth is sold out.
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
-    public void buyOneDayPassport(Integer handedMoney) {
-        validatePurchase(handedMoney, ONE_DAY_PRICE);
-        sellPassport(ONE_DAY_PRICE);
+    public Ticket buyOneDayPassport(Integer handedMoney) {
+        TicketBuyResult result = doBuyPassport(handedMoney, ONE_DAY_PRICE);
+        return result.getTicket();
     }
 
-    // TODO inoue twoDayにもJavaDocコメントをお願いします (日本語でOK) by jflute (2026/10/06)
-    public int buyTwoDayPassport(Integer handedMoney) {
-        validatePurchase(handedMoney, TWO_DAY_PRICE);
-        sellPassport(TWO_DAY_PRICE);
-
-        return handedMoney - TWO_DAY_PRICE;
+    // TODO done twoDayにもJavaDocコメントをお願いします (日本語でOK) by jflute (2026/10/06)
+    // こんな感じで良いですか？ ↓
+    /**
+     * Buy two-day passport, method for park guest.
+     * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
+     * @return The result of ticket purchase with change. (NotNull)
+     * @throws TicketSoldOutException When ticket in booth is sold out.
+     * @throws TicketShortMoneyException When the specified money is short for purchase.
+     */
+    public TicketBuyResult buyTwoDayPassport(Integer handedMoney) {
+        return doBuyPassport(handedMoney, TWO_DAY_PRICE);
     }
 
-    private void validatePurchase(Integer handedMoney, Integer dayPrice) {
-        // #1on1: $checkが納得いかない (2026/10/06) 
+    //　private void validatePurchase(Integer handedMoney, Integer dayPrice) {
+        // #1on1: $checkが納得いかない (2026/10/06)
         // $validationの枠組みなのか？DDDの感覚だと...
         // 業務的なニュアンスで言うと、手渡し金額のチェック、在庫のチェック、と自然。
         // checkはちょっと曖昧な言葉で、具体的にどうチェックしてるか？が表現されない。
@@ -86,28 +92,24 @@ public class TicketBooth {
         // checkQuantity()はシステム内部の状態のチェック。 // コア処理のイメージ
         //  → ただ、validateでも両方やることはある。
         //
-        checkHandedMoney(handedMoney, dayPrice);
-        checkQuantity();
-    }
+        // assertHandedMoneyEnough(handedMoney, dayPrice);
+        // assertTicketAvailable();
+    //}
     // #1on1: $他の人たちってjavatryってどういう風に進めてるのかな？ (2026/10/06)
     // step1,2,3,4は基礎、個性は5から。
 
-    private void checkHandedMoney(Integer handedMoney, Integer dayPrice) {
-        if (handedMoney == null) {
-            throw new IllegalArgumentException("handedMoney is required");
-        }
-        if (handedMoney < dayPrice) {
-            throw new TicketShortMoneyException("Short money: " + handedMoney);
-        }
+    private TicketBuyResult doBuyPassport(Integer handedMoney, int dayPrice) {
+        assertHandedMoneyEnough(handedMoney, dayPrice);
+        assertTicketAvailable();
+
+        processSales(dayPrice);
+
+        Ticket ticket = new Ticket(dayPrice);
+        int change = handedMoney - dayPrice;
+        return new TicketBuyResult(ticket, change);
     }
 
-    private void checkQuantity() {
-        if (quantity <= 0) {
-            throw new TicketSoldOutException("Sold out");
-        }
-    }
-
-    private void sellPassport(Integer dayPrice) {
+    private void processSales(int dayPrice) {
         addSalesProceeds(dayPrice);
         --quantity;
     }
@@ -120,6 +122,24 @@ public class TicketBooth {
         }
     }
 
+    private void assertTicketAvailable() {
+        if (quantity <= 0) {
+            throw new TicketSoldOutException("Sold out");
+        }
+    }
+
+    private void assertHandedMoneyEnough(Integer handedMoney, Integer dayPrice) {
+        if (handedMoney == null) {
+            throw new IllegalArgumentException("handedMoney is required");
+        }
+        if (handedMoney < dayPrice) {
+            throw new TicketShortMoneyException("Short money: " + handedMoney);
+        }
+    }
+
+    // ===================================================================================
+    //                                                                           Exception
+    //                                                                            ========
     public static class TicketSoldOutException extends RuntimeException {
 
         private static final long serialVersionUID = 1L;
