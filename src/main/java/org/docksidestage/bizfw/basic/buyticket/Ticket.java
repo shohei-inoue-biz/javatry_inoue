@@ -23,9 +23,10 @@ public class Ticket {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
+    // TODO inoue countOfDays, 相対的にはほぼ問題ないけど、単体で見ると、max or 残り日数なのかが曖昧になる by jflute (2026/10/22)
     private final int displayPrice; // written on ticket, park guest can watch this
-    private final int countOfDays;  // available days for park guest, e.g. 1 or 2
-    private int usedDays;           // used days, unavailable when reaching countOfDays
+    private final int countOfDays; // available days for park guest, e.g. 1 or 2
+    private int usedDays; // used days, unavailable when reaching countOfDays
 
     // ===================================================================================
     //                                                                         Constructor
@@ -56,6 +57,8 @@ public class Ticket {
         return countOfDays;
     }
 
+    // #1on1: いいね、互換性のキープもしっかりできてる (2026/10/22)
+    // 元々の alreadyIn の解釈と一致している。(元コードの変数のコメントに書いてあった)
     public boolean isAlreadyIn() {
         return usedDays >= countOfDays; // 規定の日数を使い切っていたら true
     }

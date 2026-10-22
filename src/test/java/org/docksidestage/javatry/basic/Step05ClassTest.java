@@ -213,11 +213,11 @@ public class Step05ClassTest extends PlainTestCase {
         // 1回目
         log("before 1st: isAlreadyIn=" + twoDayPassport.isAlreadyIn()); // false
         twoDayPassport.doInPark();
-        log("after 1st: isAlreadyIn=" + twoDayPassport.isAlreadyIn());  // false（まだ残り1日ある）
+        log("after 1st: isAlreadyIn=" + twoDayPassport.isAlreadyIn()); // false（まだ残り1日ある）
 
         // 2回目
         twoDayPassport.doInPark();
-        log("after 2nd: isAlreadyIn=" + twoDayPassport.isAlreadyIn());  // true（2日分使い切った）
+        log("after 2nd: isAlreadyIn=" + twoDayPassport.isAlreadyIn()); // true（2日分使い切った）
 
         // 3回目（例外が発生することを確認）
         assertException(IllegalStateException.class, () -> {
@@ -253,6 +253,9 @@ public class Step05ClassTest extends PlainTestCase {
     }
     // マジックナンバーもせたくないな
     // ticket側で定数で2を持たせた方が綺麗かも
+
+    // #1on1: $今後のことを考えると現状ちょっと微妙で悩ましい (2026/10/22)
+    // TODO inoue Good Luck 以降で困るはずなので、いったんこのままで進んでもらって後で戻ってきましょう。 by jflute (2026/10/22)
 
     // ===================================================================================
     //                                                                           Good Luck

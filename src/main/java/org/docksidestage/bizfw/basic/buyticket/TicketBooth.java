@@ -58,12 +58,16 @@ public class TicketBooth {
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
     public Ticket buyOneDayPassport(Integer handedMoney) {
+        // #1on1: 厳密にはOneDayとしてchangeやresultは要らないが、コスト掛からない処理なので... (2026/10/22)
+        // resultで受け取って必要なものだけ取り出して方式でGood。
+        // (changeやresultのコスト次第)
         TicketBuyResult result = doBuyPassport(handedMoney, ONE_DAY_PRICE, 1);
         return result.getTicket();
     }
 
-    // TODO done twoDayにもJavaDocコメントをお願いします (日本語でOK) by jflute (2026/10/06)
+    // done twoDayにもJavaDocコメントをお願いします (日本語でOK) by jflute (2026/10/06)
     // こんな感じで良いですか？ ↓
+    // #1on1: Good, publicメソッドは特にコメントの費用対効果が高い (2026/10/22)
     /**
      * Buy two-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
@@ -76,24 +80,24 @@ public class TicketBooth {
     }
 
     //　private void validatePurchase(Integer handedMoney, Integer dayPrice) {
-        // #1on1: $checkが納得いかない (2026/10/06)
-        // $validationの枠組みなのか？DDDの感覚だと...
-        // 業務的なニュアンスで言うと、手渡し金額のチェック、在庫のチェック、と自然。
-        // checkはちょっと曖昧な言葉で、具体的にどうチェックしてるか？が表現されない。
-        // 表現したくないときはフィットする言葉。
-        // もうちょい直接的な表現をしたいとなったら...
-        // e.g. assertHandedMoneyEnough();
-        //
-        // 逆に、checkHandedMoneyShort(); とかは、どっちだと例外が発生する？がわかりにくくて、
-        // 避ける傾向にある。(直接的な表現をしようとしてるのに、どっちが正しい業務か曖昧になる)
-        //
-        // あと、業務的な意味合いで言うと...
-        // checkHandedMoney()は単なる入力チェック。 // validateイメージ
-        // checkQuantity()はシステム内部の状態のチェック。 // コア処理のイメージ
-        //  → ただ、validateでも両方やることはある。
-        //
-        // assertHandedMoneyEnough(handedMoney, dayPrice);
-        // assertTicketAvailable();
+    // #1on1: $checkが納得いかない (2026/10/06)
+    // $validationの枠組みなのか？DDDの感覚だと...
+    // 業務的なニュアンスで言うと、手渡し金額のチェック、在庫のチェック、と自然。
+    // checkはちょっと曖昧な言葉で、具体的にどうチェックしてるか？が表現されない。
+    // 表現したくないときはフィットする言葉。
+    // もうちょい直接的な表現をしたいとなったら...
+    // e.g. assertHandedMoneyEnough();
+    //
+    // 逆に、checkHandedMoneyShort(); とかは、どっちだと例外が発生する？がわかりにくくて、
+    // 避ける傾向にある。(直接的な表現をしようとしてるのに、どっちが正しい業務か曖昧になる)
+    //
+    // あと、業務的な意味合いで言うと...
+    // checkHandedMoney()は単なる入力チェック。 // validateイメージ
+    // checkQuantity()はシステム内部の状態のチェック。 // コア処理のイメージ
+    //  → ただ、validateでも両方やることはある。
+    //
+    // assertHandedMoneyEnough(handedMoney, dayPrice);
+    // assertTicketAvailable();
     //}
     // #1on1: $他の人たちってjavatryってどういう風に進めてるのかな？ (2026/10/06)
     // step1,2,3,4は基礎、個性は5から。
@@ -109,6 +113,9 @@ public class TicketBooth {
         return new TicketBuyResult(ticket, change);
     }
 
+    // #1on1: 売上関連の処理がまとまってるのGood (2026/10/22)
+    // 行数関係なく業務のまとまりでメソッド化して切り出すの好きです。
+    // メソッドがコメントの代わりにもなる。
     private void processSales(int dayPrice) {
         addSalesProceeds(dayPrice);
         --quantity;
