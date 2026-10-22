@@ -58,7 +58,7 @@ public class TicketBooth {
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
     public Ticket buyOneDayPassport(Integer handedMoney) {
-        TicketBuyResult result = doBuyPassport(handedMoney, ONE_DAY_PRICE);
+        TicketBuyResult result = doBuyPassport(handedMoney, ONE_DAY_PRICE, 1);
         return result.getTicket();
     }
 
@@ -72,7 +72,7 @@ public class TicketBooth {
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
     public TicketBuyResult buyTwoDayPassport(Integer handedMoney) {
-        return doBuyPassport(handedMoney, TWO_DAY_PRICE);
+        return doBuyPassport(handedMoney, TWO_DAY_PRICE, 2);
     }
 
     //　private void validatePurchase(Integer handedMoney, Integer dayPrice) {
@@ -98,13 +98,13 @@ public class TicketBooth {
     // #1on1: $他の人たちってjavatryってどういう風に進めてるのかな？ (2026/10/06)
     // step1,2,3,4は基礎、個性は5から。
 
-    private TicketBuyResult doBuyPassport(Integer handedMoney, int dayPrice) {
+    private TicketBuyResult doBuyPassport(Integer handedMoney, int dayPrice, int countOfDays) {
         assertHandedMoneyEnough(handedMoney, dayPrice);
         assertTicketAvailable();
 
         processSales(dayPrice);
 
-        Ticket ticket = new Ticket(dayPrice);
+        Ticket ticket = new Ticket(dayPrice, countOfDays);
         int change = handedMoney - dayPrice;
         return new TicketBuyResult(ticket, change);
     }

@@ -141,7 +141,8 @@ public class Step05ClassTest extends PlainTestCase {
         // uncomment after making the method
         TicketBooth booth = new TicketBooth();
         int money = 14000;
-        int change = booth.buyTwoDayPassport(money);
+        TicketBuyResult buyResult = booth.buyTwoDayPassport(money);
+        int change = buyResult.getChange();
         Integer sea = booth.getSalesProceeds() + change;
         log(sea); // should be same as money
 
@@ -205,8 +206,26 @@ public class Step05ClassTest extends PlainTestCase {
      * (TwoDayPassportなのに一回しか利用できません。複数日数に対応できるようにTicketを修正しましょう)
      */
     public void test_class_moreFix_usePluralDays() {
-        // your confirmation code here
+        TicketBooth booth = new TicketBooth();
+        TicketBuyResult buyResult = booth.buyTwoDayPassport(20000);
+        Ticket twoDayPassport = buyResult.getTicket();
+
+        // 1回目
+        log("before 1st: isAlreadyIn=" + twoDayPassport.isAlreadyIn()); // false
+        twoDayPassport.doInPark();
+        log("after 1st: isAlreadyIn=" + twoDayPassport.isAlreadyIn());  // false（まだ残り1日ある）
+
+        // 2回目
+        twoDayPassport.doInPark();
+        log("after 2nd: isAlreadyIn=" + twoDayPassport.isAlreadyIn());  // true（2日分使い切った）
+
+        // 3回目（例外が発生することを確認）
+        assertException(IllegalStateException.class, () -> {
+            twoDayPassport.doInPark();
+        });
     }
+    // 先にしたからやってしまった。
+    // あれ2回目でエラー出た→oneDayとtwoDayで１と２間違えて入れていた。あぶね。
 
     /**
      * Accurately determine whether type of bought ticket is two-day passport or not by if-statement. (fix Ticket classes if needed) <br>
@@ -214,22 +233,26 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_whetherTicketType() {
         // uncomment when you implement this exercise
-        //TicketBooth booth = new TicketBooth();
-        //Ticket oneDayPassport = booth.buyOneDayPassport(10000);
-        //showTicketIfNeeds(oneDayPassport);
-        //TicketBuyResult buyResult = booth.buyTwoDayPassport(10000);
-        //Ticket twoDayPassport = buyResult.getTicket();
-        //showTicketIfNeeds(twoDayPassport);
+        TicketBooth booth = new TicketBooth();
+        Ticket oneDayPassport = booth.buyOneDayPassport(10000);
+        showTicketIfNeeds(oneDayPassport);
+        TicketBuyResult buyResult = booth.buyTwoDayPassport(20000);
+        Ticket twoDayPassport = buyResult.getTicket();
+        showTicketIfNeeds(twoDayPassport);
     }
+    // 気になって結構大規模改修してしまった。Ticketのコンストラクタがドメイン的な情報を網羅していくようになったので良いはず。
+    // デグレも潰したはず。潰せていなかったらコンパイルできない
 
     // uncomment when you implement this exercise
-    //private void showTicketIfNeeds(Ticket ticket) {
-    //    if (xxxxxxxxxxxxxxxxxx) { // write determination for two-day passport
-    //        log("two-day passport");
-    //    } else {
-    //        log("other");
-    //    }
-    //}
+    private void showTicketIfNeeds(Ticket ticket) {
+        if (ticket.isTwoDay()) { // write determination for two-day passport
+            log("two-day passport");
+        } else {
+            log("other");
+        }
+    }
+    // マジックナンバーもせたくないな
+    // ticket側で定数で2を持たせた方が綺麗かも
 
     // ===================================================================================
     //                                                                           Good Luck

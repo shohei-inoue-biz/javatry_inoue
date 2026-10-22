@@ -24,23 +24,25 @@ public class Ticket {
     //                                                                           Attribute
     //                                                                           =========
     private final int displayPrice; // written on ticket, park guest can watch this
-    private boolean alreadyIn; // true means this ticket is unavailable
+    private final int countOfDays;  // available days for park guest, e.g. 1 or 2
+    private int usedDays;           // used days, unavailable when reaching countOfDays
 
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
-    public Ticket(int displayPrice) {
+    public Ticket(int displayPrice, int countOfDays) {
         this.displayPrice = displayPrice;
+        this.countOfDays = countOfDays;
     }
 
     // ===================================================================================
     //                                                                             In Park
     //                                                                             =======
     public void doInPark() {
-        if (alreadyIn) {
+        if (isAlreadyIn()) {
             throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
         }
-        alreadyIn = true;
+        usedDays++;
     }
 
     // ===================================================================================
@@ -50,7 +52,15 @@ public class Ticket {
         return displayPrice;
     }
 
+    public int getCountOfDays() {
+        return countOfDays;
+    }
+
     public boolean isAlreadyIn() {
-        return alreadyIn;
+        return usedDays >= countOfDays; // 規定の日数を使い切っていたら true
+    }
+
+    public boolean isTwoDay() {
+        return countOfDays == 2;
     }
 }
