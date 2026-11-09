@@ -18,33 +18,55 @@ package org.docksidestage.bizfw.basic.buyticket;
 /**
  * @author jflute
  */
-public class Ticket {
+public abstract class Ticket {
 
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
-    // TODO inoue countOfDays, 相対的にはほぼ問題ないけど、単体で見ると、max or 残り日数なのかが曖昧になる by jflute (2026/10/22)
+    // TODO done inoue countOfDays, 相対的にはほぼ問題ないけど、単体で見ると、max or 残り日数なのかが曖昧になる by jflute (2026/10/22)
+    // 有効日数だからvalidDaysが自然かな
     private final int displayPrice; // written on ticket, park guest can watch this
-    private final int countOfDays; // available days for park guest, e.g. 1 or 2
-    private int usedDays; // used days, unavailable when reaching countOfDays
+    private final int validDays; // available days for park guest, e.g. 1 or 2
+    private int usedDays; // used days, unavailable when reaching validDays
 
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
-    public Ticket(int displayPrice, int countOfDays) {
+    public Ticket(int displayPrice, int validDays) {
         this.displayPrice = displayPrice;
-        this.countOfDays = countOfDays;
+        this.validDays = validDays;
     }
 
     // ===================================================================================
     //                                                                             In Park
     //                                                                             =======
+    /**
+     * Do in-park as daytime (default: isNight = false).
+     */
     public void doInPark() {
+        doInPark(false);
+    }
+
+    /**
+     * Do in-park specifying whether it is night or daytime.
+     * @param isNight Whether it is nighttime in-park or not.
+     */
+    public void doInPark(boolean isNight) {
         if (isAlreadyIn()) {
             throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
         }
+        // チケット固有の条件（夜限定など）をサブクラスで判定
+        assertSpecialCondition(isNight);
+
         usedDays++;
     }
+
+    /**
+     * Assert special in-park condition specific to the ticket (implemented by subclass).
+     * @param isNight Whether it is nightTime in-park or not.
+     * @throws IllegalStateException When the condition is not satisfied.
+     */
+    protected abstract void assertSpecialCondition(boolean isNight);
 
     // ===================================================================================
     //                                                                            Accessor
@@ -53,17 +75,17 @@ public class Ticket {
         return displayPrice;
     }
 
-    public int getCountOfDays() {
-        return countOfDays;
+    public int getValidDays() {
+        return validDays;
     }
 
     // #1on1: いいね、互換性のキープもしっかりできてる (2026/10/22)
     // 元々の alreadyIn の解釈と一致している。(元コードの変数のコメントに書いてあった)
     public boolean isAlreadyIn() {
-        return usedDays >= countOfDays; // 規定の日数を使い切っていたら true
+        return usedDays >= validDays; // 規定の日数を使い切っていたら true
     }
 
     public boolean isTwoDay() {
-        return countOfDays == 2;
+        return validDays == 2;
     }
 }

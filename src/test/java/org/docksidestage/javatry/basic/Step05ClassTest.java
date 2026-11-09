@@ -266,7 +266,37 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_wonder_four() {
         // your confirmation code here
+        TicketBooth booth = new TicketBooth();
+        TicketBuyResult buyResult = booth.buyFourDayPassport(30000);
+        Ticket fourDayPassport = buyResult.getTicket();
+        int change = buyResult.getChange();
+        log(fourDayPassport.getDisplayPrice() + change); // should be same as handed money (30000)
+
+        // 1回目
+        log("before 1st: isAlreadyIn=" + fourDayPassport.isAlreadyIn()); // false
+        fourDayPassport.doInPark();
+        log("after 1st: isAlreadyIn=" + fourDayPassport.isAlreadyIn()); // false（残り3日）
+
+        // 2回目
+        fourDayPassport.doInPark();
+        log("after 2nd: isAlreadyIn=" + fourDayPassport.isAlreadyIn()); // false（残り2日）
+
+        // 3回目
+        fourDayPassport.doInPark();
+        log("after 3rd: isAlreadyIn=" + fourDayPassport.isAlreadyIn()); // false（残り1日）
+
+        // 4回目
+        fourDayPassport.doInPark();
+        log("after 4th: isAlreadyIn=" + fourDayPassport.isAlreadyIn()); // true（使い切り）
+
+        // 5回目（例外が発生することを確認）
+        assertException(IllegalStateException.class, () -> {
+            fourDayPassport.doInPark();
+        });
     }
+    // テストから書く。test_class_moreFix_usePluralDays()と同様に担保できれば良い。
+    // コードとしてはbuyTwoDayPassportと同じ形で実現可能。
+    // こうなるとまとめたいが、一旦下に寄るだけの場合などもあるので、先にそっちをやる
 
     /**
      * Fix it to be able to buy night-only two-day passport (price is 7400), which can be used at only night. <br>
@@ -274,7 +304,45 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_wonder_night() {
         // your confirmation code here
+        TicketBooth booth = new TicketBooth();
+        int handedMoney = 10000;
+        TicketBuyResult buyResult = booth.buyNightOnlyTwoDayPassport(handedMoney);
+        Ticket nightTicket = buyResult.getTicket();
+        int change = buyResult.getChange();
+
+        log(nightTicket.getDisplayPrice() + change);
+
+        // 昼間（通常の doInPark()）に入園しようとしたら例外になること
+        assertException(IllegalStateException.class, () -> {
+            nightTicket.doInPark();
+        });
+
+        // 1回目
+        log("before 1st: isAlreadyIn=" + nightTicket.isAlreadyIn()); // false
+        nightTicket.doInPark(true);
+        log("after 1st: isAlreadyIn=" + nightTicket.isAlreadyIn());  // false（残り1日）
+
+        // 2回目
+        nightTicket.doInPark(true);
+        log("after 2nd: isAlreadyIn=" + nightTicket.isAlreadyIn());  // true（2日分消化）
+
+        // 3回目（例外が発生することを確認）
+        assertException(IllegalStateException.class, () -> {
+            nightTicket.doInPark(true);
+        });
     }
+    // 詰まると言われていたのはこれね
+    // ticketクラスの責務を最低限にして基底クラスとして、AllDayTicketクラスとNightOnlyTicketクラスとして継承させる。
+    // 基底クラスはabstract, 継承クラスはextendsを使う
+    // @Overrideつければコンパイルでミス拾える＋可読性上がるよね
+    // TicketからAllDayTicketに一旦リファクタする
+    // そしたらdoBuyPassportをまずはAllDayTicketに変更する
+    // 次にオーバーライドしてNightOnlyTicket用のdoBuyPassportとAllDayTicket用のdoBuyPassportを作ろう
+    // 定数たちの責務ってboothで持つのか？あーでも値段を決めるのは売る側か
+    // というかbuyXXPassport系って日付渡しているからわざわざ関数切り出すの違うんだよな
+    // buyOneDayPassportが戻り値違うのがいけないから、引数で責務分けてまとめて２つの関数で済むようにしたい。
+    // まぁ次リファクタだからその時にやろう
+    // 思ったより時間かかったな
 
     // ===================================================================================
     //                                                                         Bonus Stage

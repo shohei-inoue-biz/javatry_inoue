@@ -26,6 +26,8 @@ public class TicketBooth {
     private static final int MAX_QUANTITY = 10;
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
     private static final int TWO_DAY_PRICE = 13200;
+    private static final int FOUR_DAY_PRICE = 22400;
+    private static final int NIGHT_ONLY_TWO_DAY_PRICE = 7400;
 
     // ===================================================================================
     //                                                                           Attribute
@@ -102,13 +104,38 @@ public class TicketBooth {
     // #1on1: $他の人たちってjavatryってどういう風に進めてるのかな？ (2026/10/06)
     // step1,2,3,4は基礎、個性は5から。
 
-    private TicketBuyResult doBuyPassport(Integer handedMoney, int dayPrice, int countOfDays) {
+    /**
+     * Buy four-day passport, method for park guest.
+     * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
+     * @return The result of ticket purchase with change. (NotNull)
+     * @throws TicketSoldOutException When ticket in booth is sold out.
+     * @throws TicketShortMoneyException When the specified money is short for purchase.
+     */
+    public TicketBuyResult buyFourDayPassport(Integer handedMoney) {
+        return doBuyPassport(handedMoney, FOUR_DAY_PRICE, 4);
+    }
+
+    /**
+     * Buy night-only two-day passport, method for park guest.
+     * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
+     * @return The result of ticket purchase with change. (NotNull)
+     * @throws TicketSoldOutException When ticket in booth is sold out.
+     * @throws TicketShortMoneyException When the specified money is short for purchase.
+     */
+    public TicketBuyResult buyNightOnlyTwoDayPassport(Integer handedMoney) {
+        return doBuyPassport(handedMoney, NIGHT_ONLY_TWO_DAY_PRICE, new NightOnlyTicket(NIGHT_ONLY_TWO_DAY_PRICE, 2));
+    }
+
+    private TicketBuyResult doBuyPassport(Integer handedMoney, int dayPrice, int validDays) {
+        return doBuyPassport(handedMoney, dayPrice, new AllDayTicket(dayPrice, validDays));
+    }
+
+    private TicketBuyResult doBuyPassport(Integer handedMoney, int dayPrice, Ticket ticket) {
         assertHandedMoneyEnough(handedMoney, dayPrice);
         assertTicketAvailable();
 
         processSales(dayPrice);
 
-        Ticket ticket = new Ticket(dayPrice, countOfDays);
         int change = handedMoney - dayPrice;
         return new TicketBuyResult(ticket, change);
     }
