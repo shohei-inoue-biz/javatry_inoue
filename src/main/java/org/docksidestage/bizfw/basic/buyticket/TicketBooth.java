@@ -20,6 +20,7 @@ package org.docksidestage.bizfw.basic.buyticket;
 
 // TODO inoue authorを追加をお願いします(OSS的な文化として) by jflute (2026/11/10)
 // authorの些細なコンセプト、職人がたき的な発想ではあるけど。
+// 他のクラスでもあったらauthor見直してみてください。
 //
 // git履歴つどつど確認するわけじゃない。
 // gitの外に持ち出されたときの話も。
