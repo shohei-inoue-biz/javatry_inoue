@@ -245,6 +245,11 @@ public class Step05ClassTest extends PlainTestCase {
 
     // uncomment when you implement this exercise
     private void showTicketIfNeeds(Ticket ticket) {
+        // TODO inoue allDayのTwoDayのみを指すのか？日数が2のものを指すのか？ by jflute (2026/11/10)
+        // NightOnlyが出てきたときに違うtwoDayが登場してしまった。
+        // シンプルな仕様の時代は良かった判定が、仕様追加で曖昧になる。
+        // javatry的には「(既存の)allDayのTwoDayのみ」を指すようにしてみましょう。
+        // というか、今後チケット種別の軸が増えても、このifを変えなくても良いようにしましょう。
         if (ticket.isTwoDay()) { // write determination for two-day passport
             log("two-day passport");
         } else {
@@ -255,7 +260,7 @@ public class Step05ClassTest extends PlainTestCase {
     // ticket側で定数で2を持たせた方が綺麗かも
 
     // #1on1: $今後のことを考えると現状ちょっと微妙で悩ましい (2026/10/22)
-    // TODO inoue Good Luck 以降で困るはずなので、いったんこのままで進んでもらって後で戻ってきましょう。 by jflute (2026/10/22)
+    // done inoue Good Luck 以降で困るはずなので、いったんこのままで進んでもらって後で戻ってきましょう。 by jflute (2026/10/22)
 
     // ===================================================================================
     //                                                                           Good Luck
@@ -297,6 +302,19 @@ public class Step05ClassTest extends PlainTestCase {
     // テストから書く。test_class_moreFix_usePluralDays()と同様に担保できれば良い。
     // コードとしてはbuyTwoDayPassportと同じ形で実現可能。
     // こうなるとまとめたいが、一旦下に寄るだけの場合などもあるので、先にそっちをやる
+    //
+    // #1on1: テストファースト、実際どこまで徹底できるか？ (2026/11/10)
+    // すくなとも業務を理解してないとテストファーストできない。
+    // 実装しながら五月雨で業務を理解していくスタイルだと難しい。
+    // 事前に業務を理解するに越したことはないけど現実それはけっこう厳しい。
+    // なんだかんだ五月雨でオンデマンドで理解していくことで最低限の理解で済ませたりしている。
+    //
+    // 実装設計というフェーズのお話。実装設計という作業がなくなったわけじゃない。
+    // 実装しながら実装設計をするようになった。
+    // jflute的にラフスケッチコーディングして形を整えてこれだ！ってなったら本コーディング。
+    // なので、テストファーストっていうときに、どこに挟めばテストファーストなのか？
+    // 本コーディングの手前でテストは書くことはある。でもこれはテストファーストと呼べない？
+    //
 
     /**
      * Fix it to be able to buy night-only two-day passport (price is 7400), which can be used at only night. <br>
@@ -320,11 +338,11 @@ public class Step05ClassTest extends PlainTestCase {
         // 1回目
         log("before 1st: isAlreadyIn=" + nightTicket.isAlreadyIn()); // false
         nightTicket.doInPark(true);
-        log("after 1st: isAlreadyIn=" + nightTicket.isAlreadyIn());  // false（残り1日）
+        log("after 1st: isAlreadyIn=" + nightTicket.isAlreadyIn()); // false（残り1日）
 
         // 2回目
         nightTicket.doInPark(true);
-        log("after 2nd: isAlreadyIn=" + nightTicket.isAlreadyIn());  // true（2日分消化）
+        log("after 2nd: isAlreadyIn=" + nightTicket.isAlreadyIn()); // true（2日分消化）
 
         // 3回目（例外が発生することを確認）
         assertException(IllegalStateException.class, () -> {
@@ -343,6 +361,10 @@ public class Step05ClassTest extends PlainTestCase {
     // buyOneDayPassportが戻り値違うのがいけないから、引数で責務分けてまとめて２つの関数で済むようにしたい。
     // まぁ次リファクタだからその時にやろう
     // 思ったより時間かかったな
+
+    // #1on1: "定数たちの責務ってboothで持つのか？" ここ非常に良い着眼点。 (2026/11/10)
+    // これが、"if文で正確に判定してみましょう" のエクササイズとつながる。
+    // TODO inoue 定数たちの責務についてさらに工夫してみましょう by jflute (2026/11/10)
 
     // ===================================================================================
     //                                                                         Bonus Stage

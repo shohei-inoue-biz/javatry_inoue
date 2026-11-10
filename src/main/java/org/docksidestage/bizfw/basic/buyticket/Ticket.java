@@ -23,7 +23,7 @@ public abstract class Ticket {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
-    // TODO done inoue countOfDays, 相対的にはほぼ問題ないけど、単体で見ると、max or 残り日数なのかが曖昧になる by jflute (2026/10/22)
+    // done inoue countOfDays, 相対的にはほぼ問題ないけど、単体で見ると、max or 残り日数なのかが曖昧になる by jflute (2026/10/22)
     // 有効日数だからvalidDaysが自然かな
     private final int displayPrice; // written on ticket, park guest can watch this
     private final int validDays; // available days for park guest, e.g. 1 or 2
@@ -47,6 +47,12 @@ public abstract class Ticket {
         doInPark(false);
     }
 
+    // TODO inoue isNightがチケット種別なのか？今の時間帯なのか？ by jflute (2026/11/10)
+    // javadoc or 変数名で表現してみましょう。
+    // TODO inoue 今夜かどうか？ってのは、呼び出す人が決めることではない。 by jflute (2026/11/10)
+    // (何時から夜なのか？このチケットの夜という定義は提供側が決める)
+    // 少なくとも確認する受付の人が夜かどうかを確認するので、
+    // 引数ではなく、doInPark()の中で導出してみましょう。
     /**
      * Do in-park specifying whether it is night or daytime.
      * @param isNight Whether it is nighttime in-park or not.
@@ -61,6 +67,8 @@ public abstract class Ticket {
         usedDays++;
     }
 
+    // #1on1: いいね、テンプレートメソッドパターンGood (2026/11/10)
+    // SpecialConditionという表現が良い、他にも色々な制約が付けられる。
     /**
      * Assert special in-park condition specific to the ticket (implemented by subclass).
      * @param isNight Whether it is nightTime in-park or not.
